@@ -4,11 +4,16 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import App from './App.jsx'
 import './index.css'
+import store from './App/store.js';
+import { injectStore } from './app/storeInjector.js';
+
+injectStore(store);
+
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Provider>
+      <Provider store={store}>
         <App />
       </Provider>
 
