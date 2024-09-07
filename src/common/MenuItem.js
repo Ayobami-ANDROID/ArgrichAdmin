@@ -1,29 +1,10 @@
 import {
    ShoppingBasket,
-    Bookmark,
-    Briefcase,
-    Calendar,
-    Clipboard,
-    Cpu,
-    FilePlus,
-    FileText,
-    Gift,
-    Grid,
-    Home,
-    Lock,
-    Mail,
-    Map,
-    MessageSquare,
-    Package,
-    Share2,
-    Settings,
-    BookAIcon,
-    File,
-    LockIcon,
-    Wrench,
-    Archive,
-    Anchor,
-    ShoppingBasketIcon
+   Server,
+   ShoppingCart,
+   Home,
+   Settings
+   
   } from 'lucide-react'
 
 
@@ -42,8 +23,28 @@ import {
       icon: ShoppingBasket,
       url: '/product',
   
-     
     },
+    {
+      key: 'Category',
+      label:'Category',
+      isTitle:false,
+      icon:Server,
+      url:'/Category'
+    },
+    {
+      key:'Orders',
+      label:'Orders',
+      isTitle:false,
+      icon: ShoppingCart,
+      url:'/order'
+    },
+    {
+      key:'Settings',
+      label:'Settings',
+      isTitle:false,
+      icon:Settings,
+      url:'/settings'
+    }
   
    
   
