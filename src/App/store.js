@@ -9,7 +9,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     product: ProductReducer,
-    categoty: categoryReducer
+    category: categoryReducer
   },
 });
 
