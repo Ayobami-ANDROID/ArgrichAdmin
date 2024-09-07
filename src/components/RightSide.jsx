@@ -1,8 +1,8 @@
 import {useState} from 'react'
 import Navbar from './Navbar'
-
-
-
+import HomePage from '../pages/HomePage'
+import GetAllProduct from '../pages/Products/GetAllProduct';
+import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
 const RightSide = ({isOpen, tog}) => {
@@ -20,7 +20,10 @@ const RightSide = ({isOpen, tog}) => {
       <div className='lg:p-6 p-2'>
        
           
-     
+      <Routes>
+            <Route path='/' element={<HomePage/>}></Route>
+            <Route path="/product" element={<GetAllProduct/>}></Route>
+          </Routes>
         
       </div>
     </div>

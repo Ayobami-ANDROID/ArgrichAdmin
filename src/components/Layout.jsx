@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import RightSide from "./RightSide";
 import {  Routes, Route, Navigate } from 'react-router-dom';
+import secureLocalStorage from "react-secure-storage";
 
 
 
@@ -11,6 +12,14 @@ import {  Routes, Route, Navigate } from 'react-router-dom';
 const Layout = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
+  const token = secureLocalStorage.getItem("token")
+
+
+  if(!token){
+ 
+    return <Navigate to="/login" replace />;
+  }
+
 
 
   

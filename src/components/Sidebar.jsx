@@ -27,7 +27,7 @@ const Sidebar = ({ isOpen, tog }) => {
     // if (isActive || isParentOfActive) {
     //   setLastActiveRoute(item.url);
     // }
-    const activeClass = isActive || isParentOfActive ? "bg-blue-100 py-2 px-2 text-blue-700 rounded-lg font-semibold" : 'text-white  hover:bg-blue-50 hover:text-blue-600'
+    const activeClass = isActive || isParentOfActive ? "bg-[#F5FFF9] py-2 px-2 text-[#2A4F1A] rounded-lg font-semibold" : 'text-white  hover:bg-[#F5FFF9] hover:text-[#2A4F1A] py-2 px-2 rounded-lg'
     const hasChildren = item.children && item.children.length > 0;
     const Open = openDropdown === item.key;
 

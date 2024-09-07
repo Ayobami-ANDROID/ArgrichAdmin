@@ -15,6 +15,7 @@ import { PulseLoader } from "react-spinners";
 const Login = () => {
   const [toggle, settoggle] = useState(false);
   const { isLoading } = useSelector((state) => state.auth);
+  const navigate = useNavigate()
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -28,6 +29,7 @@ const Login = () => {
       dispatch(authReset());
       try {
         await dispatch(login(values)).unwrap();
+        navigate('/')
       } catch (error) {
         console.error("Registration failed:", error);
       }
