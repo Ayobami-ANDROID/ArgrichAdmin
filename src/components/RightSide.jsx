@@ -2,6 +2,7 @@ import {useState} from 'react'
 import Navbar from './Navbar'
 import HomePage from '../pages/HomePage'
 import GetAllProduct from '../pages/Products/GetAllProduct';
+import UpdateProduct from '../pages/Products/UpdateProduct';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -23,6 +24,8 @@ const RightSide = ({isOpen, tog}) => {
       <Routes>
             <Route path='/' element={<HomePage/>}></Route>
             <Route path="/product" element={<GetAllProduct/>}></Route>
+            <Route path="/product/update/:id" element={<UpdateProduct/>}></Route>
+            
           </Routes>
         
       </div>
