@@ -16,7 +16,7 @@ const getSearchProduct = async (name,category) => {
 }
 
 const updateProduct = async(id,userData) =>{
-  const response = await apiClient.patch(`adminuser/products/${id}`,userData)
+  const response = await apiClient.patch(`adminuser/products/${id}/`,userData)
   return response.data
 }
 

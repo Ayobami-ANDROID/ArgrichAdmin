@@ -29,7 +29,7 @@ import {
       label:'Category',
       isTitle:false,
       icon:Server,
-      url:'/Category'
+      url:'/category'
     },
     {
       key:'Orders',

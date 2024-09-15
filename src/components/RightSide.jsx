@@ -3,6 +3,8 @@ import Navbar from './Navbar'
 import HomePage from '../pages/HomePage'
 import GetAllProduct from '../pages/Products/GetAllProduct';
 import UpdateProduct from '../pages/Products/UpdateProduct';
+import AddProduct from '../pages/Products/AddProduct';
+import GetAllCategories from '../pages/categories/getAllCategories';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -24,7 +26,9 @@ const RightSide = ({isOpen, tog}) => {
       <Routes>
             <Route path='/' element={<HomePage/>}></Route>
             <Route path="/product" element={<GetAllProduct/>}></Route>
+            <Route path="/add/product" element={<AddProduct/>}></Route>
             <Route path="/product/update/:id" element={<UpdateProduct/>}></Route>
+            <Route path="/category" element={<GetAllCategories/>}></Route>
             
           </Routes>
         
