@@ -47,3 +47,14 @@ const passwordRegExp =
   lang: yup.string().required('Enter language'),
   userType: yup.string().required('Select Staff type'),
   })
+
+
+  export const validateProduct = yup.object().shape({
+    name: yup.string().required(`Enter Product Name`),
+    price: yup.string().required(`Enter product Price`),
+    description: yup.string().required(`Enter product price`),
+    category: yup.string().required('select product category'),
+    image: yup.string().required('Upload iamge'),
+
+    stock: yup.number(),
+  })

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import InputField2 from '../../components/InputField'
 import SelectField from '../../components/SelectField'
-import { updateProduct, getSingleProduct } from '../../features/product/productSlice'
+import {createProduct, getSingleProduct } from '../../features/product/productSlice'
 import { getCategory } from '../../features/category/categorySlice'
 import { PulseLoader } from 'react-spinners'
 import { validateProduct } from '../../services'
@@ -11,7 +11,8 @@ import { useFormik } from 'formik'
 import { BiArrowBack } from 'react-icons/bi'
 import UploadField from '../../components/UploadField'
 
-const UpdateProduct = () => {
+const AddProduct = () => {
+
     const { id } = useParams()
     const { isLoading, product } = useSelector((state) => state.product)
     const { categories } = useSelector((state) => state.category)
@@ -28,25 +29,10 @@ const UpdateProduct = () => {
                 console.error("Error fetching categories:", error)
             }
         }
-        const fetchProduct = async () => {
-            try {
-                const fetchedProduct = await dispatch(getSingleProduct(id)).unwrap()
-                formik.setValues({
-                    name: fetchedProduct.name || '',
-                    price: fetchedProduct.price || '',
-                    description: fetchedProduct.description || '',
-                    category: fetchedProduct.category || '',
-                    stock: fetchedProduct.stock || 0,
-                    image: fetchedProduct.image
-                })
-
-            } catch (error) {
-                console.error("Error fetching product:", error)
-            }
-        }
+       
 
         fetchCategories()
-        fetchProduct()
+        
     }, [dispatch, id])
 
     const formik = useFormik({
@@ -73,7 +59,7 @@ const UpdateProduct = () => {
          
 
             try {
-                await dispatch(updateProduct({ id:id, userData:formData })).unwrap();
+                await dispatch(createProduct( formData)).unwrap();
                 navigate('/products');
             } catch (error) {
                 console.error("Error updating product:", error);
@@ -89,9 +75,8 @@ const UpdateProduct = () => {
             value: items.category
         }
     })
-
-    return (
-        <div className="  ">
+  return (
+    <div className="  ">
             {isLoading && (
                 <div className="fixed bg-black/[0.6] h-screen w-screen z-50 left-0 top-0 items-center flex justify-center">
                     <PulseLoader speedMultiplier={0.9} color="#fff" size={20} />
@@ -103,7 +88,7 @@ const UpdateProduct = () => {
                         <BiArrowBack className="mr-2" />
                         Back
                     </button>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Update Product</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Add Product</h2>
                     <form className="space-y-4" onSubmit={formik.handleSubmit}>
                         <div className='grid grid-cols-2 gap-4'>
                             <InputField2
@@ -191,13 +176,13 @@ const UpdateProduct = () => {
                         </div>
 
                         <button type='submit' className="text-white btn w-full bg-[#008A2F] rounded-[10px] px-5 py-2">
-                            {isLoading ? 'Updating...' : 'Update Product'}
+                            {isLoading ? 'Updating...' : 'Add Product'}
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-    )
+  )
 }
 
-export default UpdateProduct
+export default AddProduct

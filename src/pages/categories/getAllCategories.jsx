@@ -10,34 +10,35 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getProducts, productReset,deleteProduct } from '../../features/product/productSlice';
+import { getCategory } from '../../features/category/categorySlice';
 
-const GetAllProduct = () => {
 
+const GetAllCategories = () => {
     const [searchQuery, setSearchQuery] = useState('')
     const [pagesize, SetPageSize] = useState(10)
     const [totalPages, setTotalPages] = useState(1)
-    const [filteredProducts, setFilteredProducts] = useState([])
+    const [filteredCategory, setFilteredCategory] = useState([])
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { isLoading, products } = useSelector((state) => state.product);
+    const { isLoading, categories } = useSelector((state) => state.category);
     let idCounter = 1
 
 
     useEffect(() => {
 
-        const fetchProduct = async () => {
-            dispatch(productReset())
+        const fetchCategory = async () => {
+
             try {
 
-                await dispatch(getProducts()).unwrap();
+                await dispatch(getCategory()).unwrap();
                 console.log(isLoading)
             } catch (error) { }
         };
 
-        fetchProduct();
+        fetchCategory();
     }, [])
+
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value)
@@ -52,24 +53,20 @@ const GetAllProduct = () => {
     }
 
     useEffect(() => {
-        if (!products) return; // Guard clause to prevent errors if products is undefined
+        if (!categories) return; // Guard clause to prevent errors if products is undefined
 
         if (searchQuery.trim() === '') {
-            setFilteredProducts(products)
+            setFilteredCategory(categories)
         } else {
-            const filtered = products.filter((product) => {
+            const filtered = categories.filter((category) => {
                 return (
-                    product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    product.category?.toLowerCase().includes(searchQuery.toLowerCase())
+                    category.category?.toLowerCase().includes(searchQuery.toLowerCase())
+
                 )
             })
-            setFilteredProducts(filtered)
+            setFilteredCategory(filtered)
         }
-    }, [searchQuery, products])
-
-
-
+    }, [searchQuery, categories])
     return (
         <div className='flex flex-col'>
             {isLoading && (
@@ -79,7 +76,7 @@ const GetAllProduct = () => {
                 </div>
             )}
             <div className='flex justify-between'>
-                
+
                 <div className="flex  border-2 bg-[#fff] p-2 rounded-lg px-4 items-center">
                     <div className=' mr-2 text-gray-500'>
                         <BiSearch />
@@ -92,10 +89,10 @@ const GetAllProduct = () => {
                         onChange={handleSearchInputChange}
                     />
                 </div>
-                
-            <div>
-                <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D] mb-8 hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
-            </div>
+
+                <div>
+                    <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D] mb-8 hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
+                </div>
             </div>
 
 
@@ -114,29 +111,18 @@ const GetAllProduct = () => {
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
                                             {' '}
-                                            Name{' '}
-                                        </th>
-                                        <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
-                                            {' '}
-                                            Price{' '}
-                                        </th>
-                                        <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
-                                            {' '}
                                             Category{' '}
                                         </th>
-                                        <th>
-                                            Description
-                                        </th>
-                                        
-                                        
+                                       
+                                      
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">Actions</th>
-                                        
+
                                     </tr>
                                 </thead>
 
-                                {filteredProducts.length > 0 ? (
+                                {filteredCategory.length > 0 ? (
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-                                        {filteredProducts.map((staff, idx) => (
+                                        {filteredCategory.map((staff, idx) => (
                                             <tr
                                                 key={idx}
                                                 className="bg-[#fff] text-[#667085]"
@@ -145,37 +131,30 @@ const GetAllProduct = () => {
                                                     {idCounter++}
 
                                                 </td>
-                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.name}
-                                                </td>
-                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.price}
-                                                </td>
+                                              
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {staff.category}
                                                 </td>
-                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {TrimText(staff.description)}
-                                                </td>
+                                                
                                                 <td>
                                                     <div className='flex'>
-                                                    <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
-                                                    <FaPen size={'1.5em'} />
-                                                    </Link>
-                                                    <button className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
-                                                      <MdDelete size={'1.5em'}/>
-                                                    </button>
+                                                        <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                            <FaPen size={'1.5em'} />
+                                                        </Link>
+                                                        <button className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
+                                                            <MdDelete size={'1.5em'} />
+                                                        </button>
                                                     </div>
-                                                    
-                                                </td>
-                                                
-                                                   
-                                                
-                                               
-                                               
 
-                                               
-                                               
+                                                </td>
+
+
+
+
+
+
+
+
                                             </tr>
                                         ))}
                                     </tbody>
@@ -283,4 +262,4 @@ const GetAllProduct = () => {
     )
 }
 
-export default GetAllProduct
+export default GetAllCategories
