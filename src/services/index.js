@@ -58,3 +58,8 @@ const passwordRegExp =
 
     stock: yup.number(),
   })
+
+
+  export const validateCategory= yup.object().shape({
+    category: yup.string().required(`Enter Category`)
+  })

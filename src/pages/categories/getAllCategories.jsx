@@ -91,7 +91,7 @@ const GetAllCategories = () => {
                 </div>
 
                 <div>
-                    <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D] mb-8 hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
+                    <Link to="/category/add" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D] mb-8 hover:bg-primary rounded-[10px] px-5 py-2'>Add Category</Link>
                 </div>
             </div>
 
@@ -138,7 +138,7 @@ const GetAllCategories = () => {
                                                 
                                                 <td>
                                                     <div className='flex'>
-                                                        <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                        <Link to={`/category/update/${staff.category}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
                                                         <button className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">

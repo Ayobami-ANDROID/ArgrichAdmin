@@ -76,7 +76,7 @@ const categorySlice = createSlice({
   name: "category",
   initialState: {
     categories: [],
-    category:{},
+    categorys:{},
     isloading: false,
   },
   reducers: {
@@ -102,7 +102,7 @@ const categorySlice = createSlice({
       })
       .addCase(getCategorybyId.fulfilled,(state,action)=>{
         state.isloading = false
-        state.category= action.payload
+        state.categorys= action.payload
       })
       .addCase(updateCategory.pending,(state,action) => {
         state.isloading = true;
