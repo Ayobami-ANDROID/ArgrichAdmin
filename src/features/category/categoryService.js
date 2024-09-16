@@ -11,17 +11,17 @@ const createCategory = async (userData) => {
 } 
 
 const getCategoryId = async (category) => {
-    const response = await apiClient.get(`/adminuser/categories/${category}`)
+    const response = await apiClient.get(`/adminuser/categories/${category}/`)
     return response.data
 }
 
 const updateCategory = async (category,userData) => {
-     const response = await apiClient.patch(`/adminuser/categories/${category}`,userData)
+     const response = await apiClient.patch(`/adminuser/categories/${category}/`,userData)
      return response.data
 }
 
 const deleteCategory = async (category) => {
-    const response = await apiClient.delete(`/adminuser/categories/${category}`)
+    const response = await apiClient.delete(`/adminuser/categories/${category}/`)
     return response.data
 }
 

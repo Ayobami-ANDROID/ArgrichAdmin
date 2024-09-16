@@ -3,7 +3,8 @@ import {
    Server,
    ShoppingCart,
    Home,
-   Settings
+   Settings,
+   UserRound
    
   } from 'lucide-react'
 
@@ -30,6 +31,13 @@ import {
       isTitle:false,
       icon:Server,
       url:'/category'
+    },
+    {
+      key: 'Customer',
+      label:'Customer',
+      isTitle:false,
+      icon:UserRound,
+      url:'/Customer'
     },
     {
       key:'Orders',
