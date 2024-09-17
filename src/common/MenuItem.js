@@ -4,7 +4,8 @@ import {
    ShoppingCart,
    Home,
    Settings,
-   UserRound
+   UserRound,
+   CircleUserRound
    
   } from 'lucide-react'
 
@@ -37,7 +38,14 @@ import {
       label:'Customer',
       isTitle:false,
       icon:UserRound,
-      url:'/Customer'
+      url:'/customer'
+    },
+    {
+      key:'Staff',
+      label:'Staff',
+      isTitle:false,
+      icon:CircleUserRound,
+      url:'/staff'
     },
     {
       key:'Orders',

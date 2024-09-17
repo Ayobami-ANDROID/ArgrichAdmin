@@ -7,6 +7,8 @@ import AddProduct from '../pages/Products/AddProduct';
 import GetAllCategories from '../pages/categories/getAllCategories';
 import UpdateCategory from '../pages/categories/UpdateCategory';
 import AddCategory from '../pages/categories/AddCategory';
+import GetAllCustomer from '../pages/Customer/GetAllCustomer';
+import GetAllStaff from '../pages/staff/GetAllStaff';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -33,7 +35,8 @@ const RightSide = ({isOpen, tog}) => {
             <Route path="/category" element={<GetAllCategories/>}></Route>
             <Route path="/category/update/:category" element={<UpdateCategory/>}></Route>
             <Route path="/category/add" element={<AddCategory/>}></Route>
-            
+            <Route path="/customer" element={<GetAllCustomer/>}></Route>
+            <Route path="/staff" element={<GetAllStaff/>}></Route>
           </Routes>
         
       </div>

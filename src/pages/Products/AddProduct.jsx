@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import InputField2 from '../../components/InputField'
 import SelectField from '../../components/SelectField'
-import {createProduct, getSingleProduct } from '../../features/product/productSlice'
+import {createProduct, getSingleProduct,deleteProduct } from '../../features/product/productSlice'
 import { getCategory } from '../../features/category/categorySlice'
 import { PulseLoader } from 'react-spinners'
-import { validateProduct } from '../../services'
+import { validateAddProduct } from '../../services'
 import { useFormik } from 'formik'
 import { BiArrowBack } from 'react-icons/bi'
 import UploadField from '../../components/UploadField'
+import secureLocalStorage from 'react-secure-storage'
+import axios from 'axios'
 
 const AddProduct = () => {
 
@@ -20,6 +22,16 @@ const AddProduct = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const [imagePreview, setImagePreview] = useState(null)
+
+    const token = secureLocalStorage.getItem("token")
+    console.log(token.access)
+
+    const config= {
+        headers:{
+            Authorization :`Bearer ${token.access}` 
+        }
+       
+    }
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -44,7 +56,7 @@ const AddProduct = () => {
             stock: 0,
             image: null
         },
-        validationSchema: validateProduct,
+        validationSchema: validateAddProduct,
         onSubmit: async (values) => {
 
             const formData = new FormData();
@@ -53,19 +65,21 @@ const AddProduct = () => {
             formData.append('description', values.description);
             formData.append('category', values.category);
             formData.append('stock', values.stock);
-            if (values.image) {
-              formData.append('image',base64);  // Append file to form data
-            }
+            formData.append('image',values.image);  // Append file to form data
+            
          
 
             try {
-                await dispatch(createProduct( formData)).unwrap();
-                navigate('/products');
+                await axios.post(`adminuser/products/`,formData,config)
+                navigate(-1);
             } catch (error) {
                 console.error("Error updating product:", error);
             }
         }
     })
+
+
+ 
 
 
 

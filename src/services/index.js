@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import axios from "axios";
 
-axios.defaults.baseURL = "https://agrich.onrender.com/api/v1/admin";
+axios.defaults.baseURL = "https://agrich.onrender.com/api/v1/";
 
 const phoneRegExp = /^\d{3} \d{3} \d{4}$/;
 const passwordRegExp =
@@ -54,8 +54,17 @@ const passwordRegExp =
     price: yup.string().required(`Enter product Price`),
     description: yup.string().required(`Enter product price`),
     category: yup.string().required('select product category'),
-    image: yup.string().required('Upload iamge'),
+    image: yup.mixed(),
+    stock: yup.number(),
+  })
 
+  
+  export const validateAddProduct = yup.object().shape({
+    name: yup.string().required(`Enter Product Name`),
+    price: yup.string().required(`Enter product Price`),
+    description: yup.string().required(`Enter product price`),
+    category: yup.string().required('select product category'),
+    image: yup.mixed().required('Upload Product Image'),
     stock: yup.number(),
   })
 
