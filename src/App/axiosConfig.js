@@ -2,28 +2,26 @@ import axios from "axios";
 import { store } from "./storeInjector";
 import { setToken } from "../features/auth/authSlice";
 
-
 const apiClient = axios.create({
   baseURL: "https://agrich.onrender.com/api/v1/",
-  headers: {
-    "Content-Type": "application/json",
-    
-  },
 });
 
-
-
-// Request interceptor to add authorization header
+// Request interceptor to add authorization header and set correct Content-Type
 apiClient.interceptors.request.use((config) => {
   const token = store.getState().auth.token;
   if (token) {
     config.headers.Authorization = `Bearer ${token.access}`;
   }
+  
+  // Check if the data is FormData
+  if (config.data instanceof FormData) {
+    config.headers["Content-Type"] = "multipart/form-data";
+  } else {
+    config.headers["Content-Type"] = "application/json";
+  }
+  
   return config;
 });
-
-
-
 
 // Response interceptor to handle expired token
 apiClient.interceptors.response.use(

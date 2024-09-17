@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { PulseLoader } from "react-spinners";
-import axios from 'axios';
+import axios from 'axios'
+import secureLocalStorage from 'react-secure-storage'
 import { toast } from 'react-toastify';
 import { BiSearch } from "react-icons/bi";
 import { useNavigate, Link } from 'react-router-dom';
@@ -8,75 +8,48 @@ import { IoEyeSharp } from "react-icons/io5";
 import { IoFilter } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import { PulseLoader } from "react-spinners";
+import apiClient from '../../app/axiosConfig';
 
-import { useDispatch, useSelector } from "react-redux";
-import { deleteCategory, getCategory } from '../../features/category/categorySlice';
-
-
-const GetAllCategories = () => {
+const GetAllStaff = () => {
+    const [data, setData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
-    const [pagesize, SetPageSize] = useState(10)
-    const [totalPages, setTotalPages] = useState(1)
-    const [filteredCategory, setFilteredCategory] = useState([])
-
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const { isLoading, categories } = useSelector((state) => state.category);
+    const [filteredProducts, setFilteredProducts] = useState([])
+    const [isLoading, setisLoading] = useState(false)
     let idCounter = 1
 
 
+
     useEffect(() => {
-
-        const fetchCategory = async () => {
-
-            try {
-
-                await dispatch(getCategory()).unwrap();
-                console.log(isLoading)
-            } catch (error) { }
-        };
-
-        fetchCategory();
+        setisLoading(true)
+        apiClient.get(`/adminuser/staff/`)
+            .then((res) => {
+                console.log(res.data)
+                setData(res.data)
+            })
+            .finally(() => setisLoading(false))
     }, [])
-
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value)
     }
 
-    function TrimText(text) {
-        if (text === null) {
-            return ''
-        }
-        const trimmedText = text.length > 10 ? text.substring(0, 10) + '...' : text
-        return trimmedText
-    }
-
     useEffect(() => {
-        if (!categories) return; // Guard clause to prevent errors if products is undefined
+        if (!data) return; // Guard clause to prevent errors if products is undefined
 
         if (searchQuery.trim() === '') {
-            setFilteredCategory(categories)
+            setFilteredProducts(data)
         } else {
-            const filtered = categories.filter((category) => {
+            const filtered = data.filter((product) => {
                 return (
-                    category.category?.toLowerCase().includes(searchQuery.toLowerCase())
+                    data.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    data.email?.toLowerCase().includes(searchQuery.toLowerCase())
 
                 )
             })
-            setFilteredCategory(filtered)
+            setFilteredProducts(filtered)
         }
-    }, [searchQuery, categories])
-
-    const handleDeleteCategory = async (id) => {
-        try {
-            await dispatch(deleteCategory(id)).unwrap();
-            await dispatch(getCategory()).unwrap();
-        } catch (error) {
-            console.error("Error deleting product:", error);
-            // You might want to show an error message to the user here
-        }
-    };
+    }, [searchQuery, data])
     return (
         <div className='flex flex-col'>
             {isLoading && (
@@ -88,7 +61,7 @@ const GetAllCategories = () => {
 
 
 
-            <div className='bg-[#fff] mt-4 shadow-md overflow-hidden  p-4  rounded-[10px]'>
+            <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
 
                 <div className='flex justify-between mb-4'>
 
@@ -106,7 +79,7 @@ const GetAllCategories = () => {
                     </div>
 
                     <div>
-                        <Link to="/category/add" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Category</Link>
+                        <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
                     </div>
                 </div>
 
@@ -123,8 +96,13 @@ const GetAllCategories = () => {
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
                                             {' '}
-                                            Category{' '}
+                                            Name{' '}
                                         </th>
+                                        <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
+                                            {' '}
+                                            Email{' '}
+                                        </th>
+
 
 
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">Actions</th>
@@ -132,9 +110,9 @@ const GetAllCategories = () => {
                                     </tr>
                                 </thead>
 
-                                {filteredCategory.length > 0 ? (
+                                {filteredProducts.length > 0 ? (
                                     <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
-                                        {filteredCategory.map((staff, idx) => (
+                                        {filteredProducts.map((staff, idx) => (
                                             <tr
                                                 key={idx}
                                                 className="bg-[#fff] text-[#667085]"
@@ -143,29 +121,29 @@ const GetAllCategories = () => {
                                                     {idCounter++}
 
                                                 </td>
-
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.category}
+                                                    {staff.name}
                                                 </td>
+                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
+                                                    {staff.email}
+                                                </td>
+
+
 
                                                 <td>
                                                     <div className='flex'>
-                                                        <Link to={`/category/update/${staff.category}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                        <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
-                                                        <button onClick={() => handleDeleteCategory(staff.category)} className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
+                                                        <button
+                                                            onClick={() => handleDeleteProduct(staff.id)}
+                                                            className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
+                                                        >
                                                             <MdDelete size={'1.5em'} />
                                                         </button>
                                                     </div>
 
                                                 </td>
-
-
-
-
-
-
-
 
                                             </tr>
                                         ))}
@@ -274,4 +252,4 @@ const GetAllCategories = () => {
     )
 }
 
-export default GetAllCategories
+export default GetAllStaff

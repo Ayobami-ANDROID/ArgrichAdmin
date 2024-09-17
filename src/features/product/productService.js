@@ -1,4 +1,16 @@
 import apiClient from "../../app/axiosConfig";
+import axios from "axios";
+import secureLocalStorage from "react-secure-storage";
+
+const token = secureLocalStorage.getItem("token")
+    console.log(token.access)
+
+    const config= {
+        headers:{
+            Authorization :`Bearer ${token.access}` 
+        }
+       
+    }
 
 const getProducts = async () => {
   const response = await apiClient.get(`adminuser/products/`);
