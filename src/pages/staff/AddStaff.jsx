@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -17,27 +16,11 @@ import secureLocalStorage from 'react-secure-storage'
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";
 import { toast } from 'react-toastify'
 
-const UpdateStaff = () => {
-    const { id } = useParams()
+const AddStaff = () => {
     const [isLoading,setIsLoading] = useState(false)
     const [toggle, settoggle] = useState(false);
     const [toggle2, settoggle2] = useState(false);
     const navigate = useNavigate()
-
-    useEffect(() => {
-        setIsLoading(true)
-        apiClient.get(`/adminuser/staff/${id}/`)
-            .then((res) => {
-                formik.setValues({
-                    email:res.data.email,
-                    name:res.data.name,
-                    password: res.data.password,
-                    confirmPassword:res.data.password
-                })
-            })
-            .catch((e)=>{})
-            .finally(()=> setIsLoading(false))
-    }, [])
 
     const formik = useFormik({
         initialValues: {
@@ -57,7 +40,7 @@ const UpdateStaff = () => {
               }
                
               setIsLoading(true)
-              apiClient.patch(`/adminuser/staff/${id}/`,body)
+              apiClient.post(`/adminuser/staff/`,body)
               .then((res) => {
                 toast.success('successful')
                 navigate(-1)
@@ -69,9 +52,8 @@ const UpdateStaff = () => {
 
         }
     })
-
-    return (
-        <div className="  ">
+  return (
+    <div className="  ">
             {isLoading && (
                 <div className="fixed bg-black/[0.6] h-screen w-screen z-50 left-0 top-0 items-center flex justify-center">
                     <PulseLoader speedMultiplier={0.9} color="#fff" size={20} />
@@ -83,7 +65,7 @@ const UpdateStaff = () => {
                         <BiArrowBack className="mr-2" />
                         Back
                     </button>
-                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Update Staff</h2>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">Add Staff</h2>
                     <form className="space-y-4" onSubmit={formik.handleSubmit}>
                         <div className='grid grid-cols-2 gap-4'>
                             <InputField2
@@ -224,13 +206,13 @@ const UpdateStaff = () => {
                         </div>
 
                         <button type='submit' className="text-white btn w-full bg-[#008A2F] rounded-[10px] px-5 py-2">
-                            {isLoading ? 'Updating...' : 'Update Staff'}
+                            {isLoading ? 'Adding...' : 'Add Staff'}
                         </button>
                     </form>
                 </div>
             </div>
         </div>
-    )
+  )
 }
 
-export default UpdateStaff
+export default AddStaff

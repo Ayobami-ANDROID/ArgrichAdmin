@@ -9,7 +9,10 @@ import UpdateCategory from '../pages/categories/UpdateCategory';
 import AddCategory from '../pages/categories/AddCategory';
 import GetAllCustomer from '../pages/Customer/GetAllCustomer';
 import GetAllStaff from '../pages/staff/GetAllStaff';
+import UpdateStaff from '../pages/staff/UpdateStaff';
+import AddStaff from '../pages/staff/AddStaff';
 import {  Routes, Route, Navigate } from 'react-router-dom';
+
 
 
 const RightSide = ({isOpen, tog}) => {
@@ -37,6 +40,8 @@ const RightSide = ({isOpen, tog}) => {
             <Route path="/category/add" element={<AddCategory/>}></Route>
             <Route path="/customer" element={<GetAllCustomer/>}></Route>
             <Route path="/staff" element={<GetAllStaff/>}></Route>
+            <Route path="/staff/update/:id" element={<UpdateStaff/>}></Route>
+            <Route path="/add/staff" element={<AddStaff/>}></Route>
           </Routes>
         
       </div>

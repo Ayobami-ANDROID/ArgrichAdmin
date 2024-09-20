@@ -22,13 +22,22 @@ const GetAllStaff = () => {
 
     useEffect(() => {
         setisLoading(true)
-        apiClient.get(`/adminuser/staff/`)
-            .then((res) => {
-                console.log(res.data)
-                setData(res.data)
-            })
-            .finally(() => setisLoading(false))
+        fetchData()
     }, [])
+
+
+    const fetchData = () => {
+        setisLoading(true)
+        apiClient.get(`/adminuser/staff/`)
+        .then((res) => {
+            console.log(res.data)
+            setData(res.data)
+        }).catch((e) =>{
+           console.log(e)
+        })
+        
+        .finally(() => setisLoading(false))
+    }
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value)
@@ -50,6 +59,22 @@ const GetAllStaff = () => {
             setFilteredProducts(filtered)
         }
     }, [searchQuery, data])
+
+
+    const handleDelte = (id) => {
+        setisLoading(true)
+        apiClient.delete(`/adminuser/staff/${id}/`)
+        .then((res) => {
+            toast.success('deleted succesfully')
+            fetchData()
+        })
+        .catch((e)=>{
+        console.log(e)
+        
+        })
+        .finally(() => setisLoading(false))
+
+    }
     return (
         <div className='flex flex-col'>
             {isLoading && (
@@ -79,7 +104,7 @@ const GetAllStaff = () => {
                     </div>
 
                     <div>
-                        <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
+                        <Link to="/add/staff" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Staff</Link>
                     </div>
                 </div>
 
@@ -132,11 +157,11 @@ const GetAllStaff = () => {
 
                                                 <td>
                                                     <div className='flex'>
-                                                        <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                        <Link to={`/staff/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
                                                         <button
-                                                            onClick={() => handleDeleteProduct(staff.id)}
+                                                            onClick={() => handleDelte(staff.id)}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                         >
                                                             <MdDelete size={'1.5em'} />
