@@ -20,22 +20,22 @@ const passwordRegExp =
   })
 
 
-  export const recoverPassword = yup.object().shape({
-    otp:yup.string().max(6,"can't contain more than 6 characters").required("required"),
-    username:yup.string().email("enter valid Username").required("required"),
-    newPassword: yup
-    .string()
-    .min(8, "password must containat least 8 characters ")
-    .matches(
-      passwordRegExp,
-      "characters with at least one of each: uppercase, lowercase, number and special"
-    )
-    .required("required"),
-    confirmPassword: yup
-    .string()
-    .oneOf([yup.ref("password")], "Passwords must match")
-    .required("required"),
-  })
+  // export const recoverPassword = yup.object().shape({
+  //   otp:yup.string().max(6,"can't contain more than 6 characters").required("required"),
+  //   username:yup.string().email("enter valid Username").required("required"),
+  //   newPassword: yup
+  //   .string()
+  //   .min(8, "password must containat least 8 characters ")
+  //   .matches(
+  //     passwordRegExp,
+  //     "characters with at least one of each: uppercase, lowercase, number and special"
+  //   )
+  //   .required("required"),
+  //   confirmPassword: yup
+  //   .string()
+  //   .oneOf([yup.ref("password")], "Passwords must match")
+  //   .required("required"),
+  // })
 
   export const addStaff= yup.object().shape({
     email: yup
@@ -66,6 +66,22 @@ const passwordRegExp =
     category: yup.string().required('select product category'),
     image: yup.mixed().required('Upload Product Image'),
     stock: yup.number(),
+  })
+
+  export const validateStaff = yup.object().shape({
+    email:yup.string().email("enter valid email").required("required"),
+    name: yup.string().required(`Enter Product Name`),
+    password: yup
+    .string()
+    .min(8, "password must containat least 8 characters ")
+    .matches(
+      passwordRegExp,
+      "characters with at least one of each: uppercase, lowercase, number and special"
+    ),
+    confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password")], "Passwords must match")
+    .required("required"),
   })
 
 
