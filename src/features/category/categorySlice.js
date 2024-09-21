@@ -9,8 +9,10 @@ export const getCategory = createAsyncThunk(
       const response = await categoryServise.getCategory();
       return response;
     } catch (error) {
+      console.log(error)
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "An error occurred"
+        
+        error.response?.data?.detail || "An error occurred"
       );
     }
   }

@@ -29,6 +29,10 @@ const GetAllCustomer = () => {
   }
 
   useEffect(() =>{
+    fetchData()
+  },[])
+
+  const fetchData = () => {
     setisLoading(true)
     apiClient.get(`/adminuser/customers`)
     .then((res)=> {
@@ -36,7 +40,7 @@ const GetAllCustomer = () => {
         setData(res.data)
     })
     .finally(() => setisLoading(false))
-  },[])
+  }
 
   const handleSearchInputChange = (event) => {
     setSearchQuery(event.target.value)
@@ -59,6 +63,22 @@ useEffect(() => {
         setFilteredProducts(filtered)
     }
 }, [searchQuery, data])
+
+
+const handleDelete = (id) => {
+    setisLoading(true)
+    apiClient.delete(`/adminuser/customers/${id}/`)
+    .then((res) => {
+        toast.success('deleted succesfully')
+        fetchData()
+    })
+    .catch((e)=>{
+    console.log(e)
+    
+    })
+    .finally(() => setisLoading(false))
+
+}
   return (
     <div className='flex flex-col'>
             {isLoading && (
@@ -87,9 +107,9 @@ useEffect(() => {
                     />
                 </div>
                 
-            <div>
+            {/* <div>
                 <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
-            </div>
+            </div> */}
             </div>
 
                 <div className="overflow-x-scroll no-scrollbar">
@@ -156,9 +176,13 @@ useEffect(() => {
                                                 </td>
                                                 <td>
                                                     <div className='flex'>
-                                                    <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
-                                                    <IoEyeSharp size={'1.5em'} />
-                                                    </Link>
+
+                                                   <button 
+                                                    onClick={() => handleDelete(staff.id)} 
+                                                    className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
+                                                >
+                                                    <MdDelete size={'1.5em'}/>
+                                                </button>
                                                    
                                                     </div>
                                                     

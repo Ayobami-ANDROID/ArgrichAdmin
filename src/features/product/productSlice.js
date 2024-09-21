@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import productService from "./productService";
+import { toast } from "react-toastify";
 
 const initialState = {
   products: [],
@@ -13,6 +14,14 @@ export const getProducts = createAsyncThunk(
       const response = await productService.getProducts();
       return response;
     } catch (error) {
+      console.log(error.response.data.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -27,6 +36,14 @@ export const getSingleProduct = createAsyncThunk(
       const response = await productService.getSingleProduct(id);
       return response;
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
