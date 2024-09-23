@@ -29,14 +29,14 @@ const GetAllStaff = () => {
     const fetchData = () => {
         setisLoading(true)
         apiClient.get(`/adminuser/staff/`)
-        .then((res) => {
-            console.log(res.data)
-            setData(res.data)
-        }).catch((e) =>{
-           console.log(e)
-        })
-        
-        .finally(() => setisLoading(false))
+            .then((res) => {
+                console.log(res.data)
+                setData(res.data)
+            }).catch((e) => {
+                console.log(e)
+            })
+
+            .finally(() => setisLoading(false))
     }
 
     const handleSearchInputChange = (event) => {
@@ -64,15 +64,22 @@ const GetAllStaff = () => {
     const handleDelte = (id) => {
         setisLoading(true)
         apiClient.delete(`/adminuser/staff/${id}/`)
-        .then((res) => {
-            toast.success('deleted succesfully')
-            fetchData()
-        })
-        .catch((e)=>{
-        console.log(e)
-        
-        })
-        .finally(() => setisLoading(false))
+            .then((res) => {
+                toast.success('deleted succesfully')
+                fetchData()
+            })
+            .catch((e) => {
+                console.log(e?.response?.data?.detail)
+                if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(e?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                }
+                else {
+                    toast.error(e?.response?.data?.detail || 'An error Occured')
+                }
+
+            })
+            .finally(() => setisLoading(false))
 
     }
     return (

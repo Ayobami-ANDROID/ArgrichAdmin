@@ -58,6 +58,14 @@ export const getSearchProduct = createAsyncThunk(
       const response = await productService.getSearchProduct(name,search)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -72,6 +80,14 @@ export const updateProduct = createAsyncThunk(
       const response = await productService.updateProduct(id,userData)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -86,6 +102,14 @@ export const deleteProduct = createAsyncThunk(
       const response = await productService.deleteProduct(id)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -100,6 +124,14 @@ export const createProduct =createAsyncThunk(
       const response = await productService.createProduct(userData)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
