@@ -12,6 +12,8 @@ import { BiArrowBack } from 'react-icons/bi'
 import UploadField from '../../components/UploadField'
 import secureLocalStorage from 'react-secure-storage'
 import axios from 'axios'
+import apiClient from '../../app/axiosConfig'
+import { toast } from 'react-toastify'
 
 const AddProduct = () => {
 
@@ -70,7 +72,22 @@ const AddProduct = () => {
          
 
             try {
-                await axios.post(`adminuser/products/`,formData,config)
+                await apiClient.post(`adminuser/products/`,formData)
+                .then((res) => {
+                    toast.success(`Successfully Added`)
+                })
+                .catch((e) => {
+                    console.log(e?.response?.data?.detail)
+                    if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                        toast.error(e?.response?.data?.detail)
+                        window.location.replace('/auth/login')
+                    }
+                    else {
+                        toast.error(e?.response?.data?.detail || 'An error Occured')
+                    }
+    
+                })
+                .finally(() => setisLoading(false))
                 navigate(-1);
             } catch (error) {
                 console.error("Error updating product:", error);

@@ -1,4 +1,4 @@
-import React,{useEffect,useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import secureLocalStorage from 'react-secure-storage'
 import { toast } from 'react-toastify';
@@ -12,85 +12,123 @@ import { PulseLoader } from "react-spinners";
 import apiClient from '../../app/axiosConfig';
 
 const GetAllCustomer = () => {
-  const [data,setData] = useState([])
-  const [searchQuery, setSearchQuery] = useState('')
-  const [filteredProducts, setFilteredProducts] = useState([])
-  const [isLoading,setisLoading] = useState(false)
-  
-  const token = secureLocalStorage.getItem("token")
-  console.log(token.access)
-  let idCounter = 1
+    const [data, setData] = useState([])
+    const [searchQuery, setSearchQuery] = useState('')
+    const [filteredProducts, setFilteredProducts] = useState([])
+    const [isLoading, setisLoading] = useState(false)
 
-  const config= {
-      headers:{
-          Authorization :`Bearer ${token.access}` 
-      }
-     
-  }
+    const token = secureLocalStorage.getItem("token")
+    console.log(token.access)
+    let idCounter = 1
 
-  useEffect(() =>{
-    setisLoading(true)
-    apiClient.get(`/adminuser/customers`)
-    .then((res)=> {
-        console.log(res.data)
-        setData(res.data)
-    })
-    .finally(() => setisLoading(false))
-  },[])
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token.access}`
+        }
 
-  const handleSearchInputChange = (event) => {
-    setSearchQuery(event.target.value)
-}
-
-
-useEffect(() => {
-    if (!data) return; // Guard clause to prevent errors if products is undefined
-
-    if (searchQuery.trim() === '') {
-        setFilteredProducts(data)
-    } else {
-        const filtered = data.filter((product) => {
-            return (
-                data.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                data.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                data.city?.toLowerCase().includes(searchQuery.toLowerCase())
-            )
-        })
-        setFilteredProducts(filtered)
     }
-}, [searchQuery, data])
-  return (
-    <div className='flex flex-col'>
+
+    useEffect(() => {
+        fetchData()
+    }, [])
+
+    const fetchData = () => {
+        setisLoading(true)
+        apiClient.get(`/adminuser/customers`)
+            .then((res) => {
+                console.log(res.data)
+                setData(res.data)
+            })
+            .catch((e) => {
+                console.log(e?.response?.data?.detail)
+                if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(e?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                }
+                else {
+                    toast.error(e?.response?.data?.detail || 'An error Occured')
+                }
+            })
+            .finally(() => setisLoading(false))
+    }
+
+    const handleSearchInputChange = (event) => {
+        setSearchQuery(event.target.value)
+    }
+
+
+    useEffect(() => {
+        if (!data) return; // Guard clause to prevent errors if products is undefined
+
+        if (searchQuery.trim() === '') {
+            setFilteredProducts(data)
+        } else {
+            const filtered = data.filter((product) => {
+                return (
+                    data.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    data.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                    data.city?.toLowerCase().includes(searchQuery.toLowerCase())
+                )
+            })
+            setFilteredProducts(filtered)
+        }
+    }, [searchQuery, data])
+
+
+    const handleDelete = (id) => {
+        setisLoading(true)
+        apiClient.delete(`/adminuser/customers/${id}/`)
+            .then((res) => {
+                toast.success('deleted succesfully')
+                fetchData()
+            })
+            .catch((e) => {
+                console.log(e?.response?.data?.detail)
+                console.log(e?.response?.data?.detail)
+                if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(e?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                }
+                else {
+                    toast.error(e?.response?.data?.detail || 'An error Occured')
+                }
+
+            })
+            .finally(() => setisLoading(false))
+
+    }
+    return (
+        <div className='flex flex-col'>
             {isLoading && (
                 <div className="fixed bg-black/[0.6] h-screen w-screen z-50 left-0 top-0 items-center flex justify-center">
                     {" "}
                     <PulseLoader speedMultiplier={0.9} color="#fff" size={20} />
                 </div>
             )}
-            
+
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
 
-            <div className='flex justify-between mb-4'>
-                
-                <div className="flex  border-2 bg-[#fff] p-2 rounded-lg px-4 items-center">
-                    <div className=' mr-2 text-gray-500'>
-                        <BiSearch />
+                <div className='flex justify-between mb-4'>
+
+                    <div className="flex  border-2 bg-[#fff] p-2 rounded-lg px-4 items-center">
+                        <div className=' mr-2 text-gray-500'>
+                            <BiSearch />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Search by email "
+                            value={searchQuery}
+                            className=" bg-inherit rounded-md outline-none"
+                            onChange={handleSearchInputChange}
+                        />
                     </div>
-                    <input
-                        type="text"
-                        placeholder="Search by email "
-                        value={searchQuery}
-                        className=" bg-inherit rounded-md outline-none"
-                        onChange={handleSearchInputChange}
-                    />
-                </div>
-                
-            <div>
+
+                    {/* <div>
                 <Link to="/add/product" className='text-white btn bg-[#2A4F1A] hover:bg-[#005C2D]  hover:bg-primary rounded-[10px] px-5 py-2'>Add Product</Link>
-            </div>
-            </div>
+            </div> */}
+                </div>
 
                 <div className="overflow-x-scroll no-scrollbar">
                     <div className="min-w-full inline-block align-middle">
@@ -121,10 +159,10 @@ useEffect(() => {
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
                                             ZipCode
                                         </th>
-                                        
-                                        
+
+
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">Actions</th>
-                                        
+
                                     </tr>
                                 </thead>
 
@@ -156,21 +194,25 @@ useEffect(() => {
                                                 </td>
                                                 <td>
                                                     <div className='flex'>
-                                                    <Link to={`/product/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
-                                                    <IoEyeSharp size={'1.5em'} />
-                                                    </Link>
-                                                   
-                                                    </div>
-                                                    
-                                                </td>
-                                                
-                                                   
-                                                
-                                               
-                                               
 
-                                               
-                                               
+                                                        <button
+                                                            onClick={() => handleDelete(staff.id)}
+                                                            className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
+                                                        >
+                                                            <MdDelete size={'1.5em'} />
+                                                        </button>
+
+                                                    </div>
+
+                                                </td>
+
+
+
+
+
+
+
+
                                             </tr>
                                         ))}
                                     </tbody>
@@ -275,7 +317,7 @@ useEffect(() => {
 
 
         </div>
-  )
+    )
 }
 
 export default GetAllCustomer

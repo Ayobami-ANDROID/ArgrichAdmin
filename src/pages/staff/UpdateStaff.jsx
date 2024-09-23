@@ -19,7 +19,7 @@ import { toast } from 'react-toastify'
 
 const UpdateStaff = () => {
     const { id } = useParams()
-    const [isLoading,setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [toggle, settoggle] = useState(false);
     const [toggle2, settoggle2] = useState(false);
     const navigate = useNavigate()
@@ -29,14 +29,23 @@ const UpdateStaff = () => {
         apiClient.get(`/adminuser/staff/${id}/`)
             .then((res) => {
                 formik.setValues({
-                    email:res.data.email,
-                    name:res.data.name,
+                    email: res.data.email,
+                    name: res.data.name,
                     password: res.data.password,
-                    confirmPassword:res.data.password
+                    confirmPassword: res.data.password
                 })
             })
-            .catch((e)=>{})
-            .finally(()=> setIsLoading(false))
+            .catch((e) => {
+                console.log(e?.response?.data?.detail)
+                if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(e?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                }
+                else {
+                    toast.error(e?.response?.data?.detail || 'An error Occured')
+                }
+            })
+            .finally(() => setIsLoading(false))
     }, [])
 
     const formik = useFormik({
@@ -49,21 +58,30 @@ const UpdateStaff = () => {
         validationSchema: validateStaff,
         onSubmit: async (values) => {
             console.log(values)
-              const body ={
-                email:values.email,
-                name:values.name,
+            const body = {
+                email: values.email,
+                name: values.name,
                 password: values.password,
                 is_staff: true
-              }
-               
-              setIsLoading(true)
-              apiClient.patch(`/adminuser/staff/${id}/`,body)
-              .then((res) => {
-                toast.success('successful')
-                navigate(-1)
-              })
-              .catch((e)=>{})
-              .finally(()=> setIsLoading(false))
+            }
+
+            setIsLoading(true)
+            apiClient.patch(`/adminuser/staff/${id}/`, body)
+                .then((res) => {
+                    toast.success('successful')
+                    navigate(-1)
+                })
+                .catch((e) => {
+                    console.log(e?.response?.data?.detail)
+                    if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                        toast.error(e?.response?.data?.detail)
+                        window.location.replace('/auth/login')
+                    }
+                    else {
+                        toast.error(e?.response?.data?.detail || 'An error Occured')
+                    }
+                })
+                .finally(() => setIsLoading(false))
 
 
 

@@ -9,8 +9,17 @@ export const getCategory = createAsyncThunk(
       const response = await categoryServise.getCategory();
       return response;
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || "An error occurred"
+        
+        error.response?.data?.detail || "An error occurred"
       );
     }
   }
@@ -23,6 +32,14 @@ export const createCategory = createAsyncThunk(
       const response = await categoryServise.createCategory(userdata)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -37,6 +54,14 @@ export const getCategorybyId = createAsyncThunk(
       const response = await categoryServise.getCategoryId(category)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -51,6 +76,14 @@ export const updateCategory = createAsyncThunk(
       const response = await categoryServise.updateCategory(category,userdata)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -65,6 +98,14 @@ export const deleteCategory = createAsyncThunk(
       const response = await categoryServise.deleteCategory(category)
       return response
     } catch (error) {
+      console.log(error?.response?.data?.detail)
+      if(error?.response?.data?.detail === "Authentication credentials were not provided."){
+        toast.error(error?.response?.data?.detail)
+        window.location.replace('/auth/login')
+      }
+      else{
+        toast.error(error?.response?.data?.detail || 'An error Occured')
+      }
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
