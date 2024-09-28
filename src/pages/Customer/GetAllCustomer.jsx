@@ -23,7 +23,7 @@ const GetAllCustomer = () => {
 
     const config = {
         headers: {
-            Authorization: `Bearer ${token.access}`
+            Authorization: `Bearer ${token?.access}`
         }
 
     }

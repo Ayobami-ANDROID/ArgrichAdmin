@@ -32,7 +32,7 @@ const MobileSidebar = ({ isOpen, tog }) => {
 
   const renderMenuItem = (item) => {
     const isActive = location.pathname === item.url;
-    const activeClass = isActive ? 'text-blue-500' : 'text-[#f9f9f9] hover:text-blue-500';
+    const activeClass = isActive ? "bg-[#F5FFF9] py-2 px-2 text-[#2A4F1A] rounded-lg font-semibold" : 'text-white  hover:bg-[#F5FFF9] hover:text-[#2A4F1A] py-2 px-2 rounded-lg'
     const hasChildren = item.children && item.children.length > 0;
     const isOpen = openDropdown === item.key;
 
@@ -78,7 +78,7 @@ const MobileSidebar = ({ isOpen, tog }) => {
       <div 
         ref={sidebarRef}
         className={`
-          duration-300 sidebar h-screen bg-[#0A0C11] overflow-auto flex flex-col leading-normal text-white w-[80%] md:w-[45%] lg:h-[100vh] px-[20px] py-[20px] fixed top-0 ${isOpen ? 'left-0' : 'left-[-100%]'} z-[1000] no-scrollbar lg:hidden
+          duration-300 sidebar h-screen bg-[#005C2D] overflow-auto flex flex-col leading-normal text-white w-[80%] md:w-[45%] lg:h-[100vh] px-[20px] py-[20px] fixed top-0 ${isOpen ? 'left-0' : 'left-[-100%]'} z-[1000] no-scrollbar lg:hidden
         `}
       >
         <div>

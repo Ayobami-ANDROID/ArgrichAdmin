@@ -30,7 +30,7 @@ const AddProduct = () => {
 
     const config= {
         headers:{
-            Authorization :`Bearer ${token.access}` 
+            Authorization :`Bearer ${token?.access}` 
         }
        
     }
@@ -75,6 +75,7 @@ const AddProduct = () => {
                 await apiClient.post(`adminuser/products/`,formData)
                 .then((res) => {
                     toast.success(`Successfully Added`)
+                    navigate(-1);
                 })
                 .catch((e) => {
                     console.log(e?.response?.data?.detail)
@@ -87,8 +88,8 @@ const AddProduct = () => {
                     }
     
                 })
-                .finally(() => setisLoading(false))
-                navigate(-1);
+                
+                
             } catch (error) {
                 console.error("Error updating product:", error);
             }

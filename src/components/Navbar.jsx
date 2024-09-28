@@ -11,12 +11,13 @@ import { CiSearch } from "react-icons/ci";
 
 import { useNavigate } from "react-router-dom";
 import avatar from "../assets/Avatar.png"
+import secureLocalStorage from "react-secure-storage";
 
 const Navbar = ({ isOpen, tog }) => {
   //     const [isOpen, setIsOpen] = useState(false);
   //   const toggle = () => setIsOpen(!isOpen);
-  const name = localStorage.getItem('name')
-  const email = localStorage.getItem('email')
+  const email = localStorage.getItem('name')
+  const name = secureLocalStorage.getItem('email')
 
   const navigate = useNavigate()
 
