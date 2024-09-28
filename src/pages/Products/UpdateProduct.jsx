@@ -28,7 +28,7 @@ const UpdateProduct = () => {
 
     const config= {
         headers:{
-            Authorization :`Bearer ${token.access}` 
+            Authorization :`Bearer ${token?.access}` 
         }
        
     }

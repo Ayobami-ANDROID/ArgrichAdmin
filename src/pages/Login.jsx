@@ -10,6 +10,7 @@ import { toast, Bounce } from "react-toastify";
 import { authReset, login } from "../features/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { PulseLoader } from "react-spinners";
+import secureLocalStorage from "react-secure-storage";
 
 
 const Login = () => {
@@ -29,6 +30,7 @@ const Login = () => {
       dispatch(authReset());
       try {
         await dispatch(login(values)).unwrap();
+        secureLocalStorage.setItem("email",values.email)
         navigate('/')
       } catch (error) {
         console.error("Registration failed:", error);
