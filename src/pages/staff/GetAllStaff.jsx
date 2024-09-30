@@ -10,12 +10,15 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
 import apiClient from '../../app/axiosConfig';
+import Modal from './Modal';
 
 const GetAllStaff = () => {
     const [data, setData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [filteredProducts, setFilteredProducts] = useState([])
     const [isLoading, setisLoading] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState(null);
     let idCounter = 1
 
 
@@ -24,6 +27,14 @@ const GetAllStaff = () => {
         setisLoading(true)
         fetchData()
     }, [])
+
+    const close = () => {
+        setOpenModal(false)
+    }
+
+    const onDeleteSuccess = () => {
+        fetchData()
+    }
 
 
     const fetchData = () => {
@@ -94,6 +105,7 @@ const GetAllStaff = () => {
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
+            {openModal && (<Modal func={close} id={selectedProductId} onDeleteSuccess={onDeleteSuccess} />) }
 
                 <div className='flex justify-between mb-4'>
 
@@ -168,7 +180,11 @@ const GetAllStaff = () => {
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
                                                         <button
-                                                            onClick={() => handleDelte(staff.id)}
+                                                              onClick={() => {
+                                                                setOpenModal(true)
+                                                                setSelectedProductId(staff.id)
+                                                                console.log("click")
+                                                            }}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                         >
                                                             <MdDelete size={'1.5em'} />

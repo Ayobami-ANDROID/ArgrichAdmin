@@ -8,7 +8,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { IoFilter } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-
+import Modal from './Modal';
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory, getCategory } from '../../features/category/categorySlice';
 
@@ -18,11 +18,19 @@ const GetAllCategories = () => {
     const [pagesize, SetPageSize] = useState(10)
     const [totalPages, setTotalPages] = useState(1)
     const [filteredCategory, setFilteredCategory] = useState([])
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { isLoading, categories } = useSelector((state) => state.category);
     let idCounter = 1
+
+    const close = () => {
+        setOpenModal(false)
+    }
+
+    console.log(openModal)
 
 
     useEffect(() => {
@@ -68,15 +76,7 @@ const GetAllCategories = () => {
         }
     }, [searchQuery, categories])
 
-    const handleDeleteCategory = async (id) => {
-        try {
-            await dispatch(deleteCategory(id)).unwrap();
-            await dispatch(getCategory()).unwrap();
-        } catch (error) {
-            console.error("Error deleting product:", error);
-            // You might want to show an error message to the user here
-        }
-    };
+   
     return (
         <div className='flex flex-col'>
             {isLoading && (
@@ -89,7 +89,7 @@ const GetAllCategories = () => {
 
 
             <div className='bg-[#fff] mt-4 shadow-md overflow-hidden  p-4  rounded-[10px]'>
-
+            {openModal && (<Modal func={close} id={selectedProductId} />) }
                 <div className='flex justify-between mb-4'>
 
                     <div className="flex  border-2 bg-[#fff] p-2 rounded-lg px-4 items-center">
@@ -153,7 +153,13 @@ const GetAllCategories = () => {
                                                         <Link to={`/category/update/${staff.category}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
-                                                        <button onClick={() => handleDeleteCategory(staff.category)} className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
+                                                        <button
+                                                            onClick={() => {
+                                                                setOpenModal(true)
+                                                                setSelectedProductId(staff.category)
+                                                                console.log("click")
+                                                            }}
+                                                            className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
                                                             <MdDelete size={'1.5em'} />
                                                         </button>
                                                     </div>
