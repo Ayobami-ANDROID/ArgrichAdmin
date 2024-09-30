@@ -9,39 +9,28 @@ import { IoFilter } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
-import Modal from './Modal';
 import apiClient from '../../app/axiosConfig';
 
-const GetAllCustomer = () => {
+const GetAllOrders = () => {
     const [data, setData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [filteredProducts, setFilteredProducts] = useState([])
     const [isLoading, setisLoading] = useState(false)
-    const [openModal, setOpenModal] = useState(false)
-    const [selectedProductId, setSelectedProductId] = useState(null);
 
     const token = secureLocalStorage.getItem("token")
-    console.log(token.access)
+    // console.log(token.access)
     let idCounter = 1
 
-    const config = {
-        headers: {
-            Authorization: `Bearer ${token?.access}`
-        }
-
-    }
-
-    const close = () => {
-        setOpenModal(false)
-    }
 
     useEffect(() => {
         fetchData()
     }, [])
 
+
+
     const fetchData = () => {
         setisLoading(true)
-        apiClient.get(`/adminuser/customers/`)
+        apiClient.get(`/adminuser/orders`)
             .then((res) => {
                 console.log(res.data)
                 setData(res.data)
@@ -59,10 +48,6 @@ const GetAllCustomer = () => {
             .finally(() => setisLoading(false))
     }
 
-    const onDeleteSuccess = () => {
-        fetchData()
-    }
-
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value)
     }
@@ -76,14 +61,20 @@ const GetAllCustomer = () => {
         } else {
             const filtered = data.filter((product) => {
                 return (
-                    data.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    data.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                    data.city?.toLowerCase().includes(searchQuery.toLowerCase())
+                    data.status?.toLowerCase().includes(searchQuery.toLowerCase())
                 )
             })
             setFilteredProducts(filtered)
         }
     }, [searchQuery, data])
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        return `${date.toLocaleString("en-US", { month: "short" })} ${date.getDate()} ${date.getFullYear().toString().slice(-2)}`;
+      }
+
+
+
 
 
     const handleDelete = (id) => {
@@ -120,7 +111,6 @@ const GetAllCustomer = () => {
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
-            {openModal && (<Modal func={close} id={selectedProductId} onDeleteSuccess={onDeleteSuccess} />) }
 
                 <div className='flex justify-between mb-4'>
 
@@ -155,25 +145,31 @@ const GetAllCustomer = () => {
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
                                             {' '}
-                                            Name{' '}
+                                            Order Id{' '}
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
                                             {' '}
-                                            Email{' '}
+                                            Customer Name{' '}
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
                                             {' '}
-                                            Address{' '}
+                                            Customer Email{' '}
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
-                                            City
+                                            Status
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
-                                            ZipCode
+                                            Has Paid
+                                        </th>
+                                        <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
+                                            Delivered
+                                        </th>
+                                        <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
+                                            Created Date
                                         </th>
 
 
-                                        <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">Actions</th>
+                                        <th className="px-4 py-4 text-start text-sm  whitespace-nowrap"></th>
 
                                     </tr>
                                 </thead>
@@ -190,35 +186,45 @@ const GetAllCustomer = () => {
 
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.name}
+                                                    {staff.id}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.email}
+                                                    {staff.user.name}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.address}
+                                                    {staff.user.email}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.city}
+                                                    <p className={`px-4 text-[12px] font-medium rounded-md py-2 w-full mx-auto max-w-[69px] font-manrope flex items-center justify-center ${staff.status === "Canceled" ? "text-[#fff] bg-[red]" :
+                                                            staff.status === "Pending" ? "bg-[#FFB3B3] text-[#C50000]" :
+                                                                staff.status === "Completed" ? "text-[#ffff] bg-[#5d9f65]" : ""
+                                                        }`}>
+                                                        {staff.status}
+                                                    </p>
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.zipcode}
+                                                    {staff.has_paid === true ? 'yes':'No'}
+                                                </td>
+                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
+                                                    {staff.delivered === true ? 'yes':'No'}
+                                                </td>
+                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
+                                                    {formatDate(staff.created_at)}
                                                 </td>
                                                 <td>
-                                                    <div className='flex'>
+                                                    {/* <div className='flex'>
 
                                                         <button
-                                                           onClick={() => {
-                                                            setOpenModal(true)
-                                                            setSelectedProductId(staff.id)
-                                                            console.log("click")
-                                                        }}
+                                                            onClick={() => handleDelete(staff.id)}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                         >
                                                             <MdDelete size={'1.5em'} />
                                                         </button>
 
-                                                    </div>
+                                                    </div> */}
+                                                      <Link to={`/staff/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                            <IoEyeSharp size={'1.5em'} />
+                                                        </Link>
 
                                                 </td>
 
@@ -336,4 +342,4 @@ const GetAllCustomer = () => {
     )
 }
 
-export default GetAllCustomer
+export default GetAllOrders

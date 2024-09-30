@@ -6,10 +6,21 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts, productReset, deleteProduct } from '../../features/product/productSlice';
+import Modal from './Modal';
 
 const GetAllProduct = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [filteredProducts, setFilteredProducts] = useState([]);
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState(null);
+
+    const close = () => {
+        setOpenModal(false)
+    }
+
+    console.log(openModal)
+
+
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -45,7 +56,7 @@ const GetAllProduct = () => {
 
         const filtered = searchQuery.trim() === ''
             ? products
-            : products.filter((product) => 
+            : products.filter((product) =>
                 product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 product.category?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -54,15 +65,7 @@ const GetAllProduct = () => {
         setFilteredProducts(filtered);
     }, [searchQuery, products]);
 
-    const handleDeleteProduct = async (id) => {
-        try {
-            await dispatch(deleteProduct(id)).unwrap();
-            await dispatch(getProducts()).unwrap();
-        } catch (error) {
-            console.error("Error deleting product:", error);
-            // You might want to show an error message to the user here
-        }
-    };
+
 
     return (
         <div className='flex flex-col'>
@@ -72,7 +75,10 @@ const GetAllProduct = () => {
                 </div>
             )}
 
+
+
             <div className='bg-[#fff] mt-4 shadow-md overflow-hidden p-4 rounded-[10px]'>
+            {openModal && (<Modal func={close} id={selectedProductId} />) }
                 <div className='flex justify-between mb-4'>
                     <div className="flex border-2 bg-[#fff] p-2 rounded-lg px-4 items-center">
                         <div className='mr-2 text-gray-500'>
@@ -106,26 +112,37 @@ const GetAllProduct = () => {
                             </thead>
                             <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
                                 {filteredProducts.map((product, idx) => (
-                                    <tr key={product.id} className="bg-[#fff] text-[#667085]">
-                                        <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{idCounter++}</td>
-                                        <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.name}</td>
-                                        <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.price}</td>
-                                        <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.category}</td>
-                                        <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{trimText(product.description)}</td>
-                                        <td>
-                                            <div className='flex'>
-                                                <Link to={`/product/update/${product.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
-                                                    <FaPen size={'1.5em'} />
-                                                </Link>
-                                                <button 
-                                                    onClick={() => handleDeleteProduct(product.id)} 
-                                                    className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
-                                                >
-                                                    <MdDelete size={'1.5em'}/>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    <>
+                                       
+
+                                        <tr key={product.id} className="bg-[#fff] text-[#667085]">
+
+                                            <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{idCounter++}</td>
+                                            <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.name}</td>
+                                            <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.price}</td>
+                                            <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{product.category}</td>
+                                            <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">{trimText(product.description)}</td>
+                                            <td>
+                                                <div className='flex'>
+                                                    <Link to={`/product/update/${product.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
+                                                        <FaPen size={'1.5em'} />
+                                                    </Link>
+                                                    <button
+                                                        onClick={() => {
+                                                            setOpenModal(true)
+                                                            setSelectedProductId(product.id)
+                                                            console.log("click")
+                                                        }}
+                                                        className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
+                                                    >
+                                                        <MdDelete size={'1.5em'} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </>
+
+
                                 ))}
                             </tbody>
                         </table>
