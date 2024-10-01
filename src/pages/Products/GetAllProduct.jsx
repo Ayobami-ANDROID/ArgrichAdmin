@@ -5,6 +5,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
+import { IoFilter } from "react-icons/io5";
 import { getProducts, productReset, deleteProduct } from '../../features/product/productSlice';
 import Modal from './Modal';
 
@@ -13,6 +14,10 @@ const GetAllProduct = () => {
     const [filteredProducts, setFilteredProducts] = useState([]);
     const [openModal, setOpenModal] = useState(false)
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [limit, setLimit] = useState(10)
+    const [offset, setOffset] = useState(0)
+    const [totalPages,setTotalPages] = useState(0)
+    let idCounter = limit * offset + 1
 
     const close = () => {
         setOpenModal(false)
@@ -25,20 +30,30 @@ const GetAllProduct = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { isLoading, products } = useSelector((state) => state.product);
-    let idCounter = 1;
+ 
 
     useEffect(() => {
         const fetchProduct = async () => {
             dispatch(productReset());
             try {
-                await dispatch(getProducts()).unwrap();
+              const display =  await dispatch(getProducts({limit:limit, offset:offset})).unwrap();
+              setTotalPages(Math.ceil(display.count/limit))
+              console.log(display)
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         };
 
         fetchProduct();
-    }, [dispatch]);
+    }, [dispatch,offset,limit]);
+
+    const goToNextPage = () => {
+        setOffset((prevPage) => prevPage + 1)
+      }
+    
+      const goToPreviousPage = () => {
+        setOffset((prevPage) => prevPage - 1)
+      }
 
     const handleSearchInputChange = (event) => {
         setSearchQuery(event.target.value);
@@ -52,11 +67,12 @@ const GetAllProduct = () => {
     }
 
     useEffect(() => {
-        if (!products) return;
+        if (!products.results) return;
+        console.log(products.results)
 
         const filtered = searchQuery.trim() === ''
-            ? products
-            : products.filter((product) =>
+            ? products.results
+            : products.results.filter((product) =>
                 product.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
                 product.category?.toLowerCase().includes(searchQuery.toLowerCase())
@@ -148,7 +164,87 @@ const GetAllProduct = () => {
                         </table>
                     </div>
                 </div>
+                <div className='flex justify-between p-4'>
+                    <div className="flex justify-between">
+                        <div></div>
+                        <div className='flex items-center justify-end rounded-[5px] border-2 p-2 my-4 mx-2'>
+                            <div>
+                                <IoFilter />
+                            </div>
+                            <select
+                                value={limit}
+                                onChange={(e) => setLimit(parseInt(e.target.value))}
+                                className='outline-none'
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
+
+                    </div>
+                    <div className="flex justify-end items-center">
+                        <button
+                            className={`mr-2 ${offset === 0
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            // onClick={() => onPageChange(currentPage - 1)}
+                            onClick={goToPreviousPage}
+                            disabled={offset === 0}
+                        >
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                            Prev
+                        </button>
+                        <div>
+                            {offset + 1} of {totalPages}
+                        </div>
+                        <button
+                            className={`ml-2 ${offset + 1 === totalPages
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            onClick={goToNextPage}
+                            // disabled={currentPage === totalPages}
+                            disabled={offset + 1 === totalPages}
+                        >
+                            Next
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
             </div>
+            
         </div>
     );
 };

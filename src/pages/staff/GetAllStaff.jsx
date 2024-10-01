@@ -19,14 +19,17 @@ const GetAllStaff = () => {
     const [isLoading, setisLoading] = useState(false)
     const [openModal, setOpenModal] = useState(false)
     const [selectedProductId, setSelectedProductId] = useState(null);
-    let idCounter = 1
+    const [limit, setLimit] = useState(10)
+    const [offset, setOffset] = useState(0)
+    const [totalPages,setTotalPages] = useState(0)
+    let idCounter = limit * offset + 1
 
 
 
     useEffect(() => {
         setisLoading(true)
         fetchData()
-    }, [])
+    }, [limit,offset])
 
     const close = () => {
         setOpenModal(false)
@@ -37,12 +40,22 @@ const GetAllStaff = () => {
     }
 
 
+    const goToNextPage = () => {
+        setOffset((prevPage) => prevPage + 1)
+      }
+    
+      const goToPreviousPage = () => {
+        setOffset((prevPage) => prevPage - 1)
+      }
+
     const fetchData = () => {
         setisLoading(true)
-        apiClient.get(`/adminuser/staff/`)
+        apiClient.get(`/adminuser/staff/?limit=${limit}&offset=${offset} `)
             .then((res) => {
                 console.log(res.data)
-                setData(res.data)
+                setData(res.data.results)
+                const result = res.data.count
+                setTotalPages(Math.ceil(result/limit))
             }).catch((e) => {
                 console.log(e)
             })
@@ -105,7 +118,7 @@ const GetAllStaff = () => {
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
-            {openModal && (<Modal func={close} id={selectedProductId} onDeleteSuccess={onDeleteSuccess} />) }
+                {openModal && (<Modal func={close} id={selectedProductId} onDeleteSuccess={onDeleteSuccess} />)}
 
                 <div className='flex justify-between mb-4'>
 
@@ -180,7 +193,7 @@ const GetAllStaff = () => {
                                                             <FaPen size={'1.5em'} />
                                                         </Link>
                                                         <button
-                                                              onClick={() => {
+                                                            onClick={() => {
                                                                 setOpenModal(true)
                                                                 setSelectedProductId(staff.id)
                                                                 console.log("click")
@@ -209,85 +222,85 @@ const GetAllStaff = () => {
 
 
 
-                {/* <div className='flex justify-between p-4'>
-    <div className="flex justify-between">
-        <div></div>
-        <div className='flex items-center justify-end rounded-[5px] border-2 p-2 my-4 mx-2'>
-            <div>
-                <IoFilter />
-            </div>
-            <select
-                value={pagesize}
-                onChange={(e) => SetPageSize(parseInt(e.target.value))}
-                className='outline-none'
-            >
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-                <option value="30">30</option>
-                <option value="50">50</option>
-            </select>
-        </div>
+                <div className='flex justify-between p-4'>
+                    <div className="flex justify-between">
+                        <div></div>
+                        <div className='flex items-center justify-end rounded-[5px] border-2 p-2 my-4 mx-2'>
+                            <div>
+                                <IoFilter />
+                            </div>
+                            <select
+                                value={limit}
+                                onChange={(e) => setLimit(parseInt(e.target.value))}
+                                className='outline-none'
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
 
-    </div>
-    <div className="flex justify-end items-center">
-        <button
-            className={`mr-2 ${pageNumber === 0
-                ? 'opacity-50 cursor-not-allowed'
-                : 'cursor-pointer'
-                }`}
-            // onClick={() => onPageChange(currentPage - 1)}
-            onClick={handlePreviousPage}
-            disabled={pageNumber === 0}
-        >
-            <svg
-                className="w-6 h-6 inline-block align-middle"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M15 19l-7-7 7-7"
-                />
-            </svg>
-            Prev
-        </button>
-        <div>
-            {pageNumber + 1} of {totalPages}
-        </div>
-        <button
-            className={`ml-2 ${pageNumber + 1 === totalPages
-                ? 'opacity-50 cursor-not-allowed'
-                : 'cursor-pointer'
-                }`}
-            onClick={handleNextPage}
-            // disabled={currentPage === totalPages}
-            disabled={pageNumber + 1 === totalPages}
-        >
-            Next
-            <svg
-                className="w-6 h-6 inline-block align-middle"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-            >
-                <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M9 5l7 7-7 7"
-                />
-            </svg>
-        </button>
-    </div>
-</div> */}
+                    </div>
+                    <div className="flex justify-end items-center">
+                        <button
+                            className={`mr-2 ${offset === 0
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            // onClick={() => onPageChange(currentPage - 1)}
+                            onClick={goToPreviousPage}
+                            disabled={offset === 0}
+                        >
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                            Prev
+                        </button>
+                        <div>
+                            {offset + 1} of {totalPages}
+                        </div>
+                        <button
+                            className={`ml-2 ${offset + 1 === totalPages
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            onClick={goToNextPage}
+                            // disabled={currentPage === totalPages}
+                            disabled={offset + 1 === totalPages}
+                        >
+                            Next
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
 
 

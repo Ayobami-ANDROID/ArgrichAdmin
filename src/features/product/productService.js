@@ -12,8 +12,8 @@ const token = secureLocalStorage.getItem("token")
        
     }
 
-const getProducts = async () => {
-  const response = await apiClient.get(`adminuser/products/`);
+const getProducts = async (limit, offset) => {
+  const response = await apiClient.get(`adminuser/products/?limit=${limit}&offset=${offset}`);
   return response.data;
 };
 

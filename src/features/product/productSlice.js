@@ -9,9 +9,9 @@ const initialState = {
 };
 export const getProducts = createAsyncThunk(
   "products/",
-  async (_, thunkAPI) => {
+  async ({limit,offset}, thunkAPI) => {
     try {
-      const response = await productService.getProducts();
+      const response = await productService.getProducts(limit,offset);
       return response;
     } catch (error) {
       console.log(error.response.data.detail)
@@ -178,7 +178,7 @@ const productSlice = createSlice({
       }) 
       .addCase(getSearchProduct.fulfilled,(state,action) => {
         state.isLoading = false;
-        state.products = action.payload.results
+        state.products = action.payload
       })
       .addCase(getSearchProduct.rejected,(state,action) => {
         state.isLoading = false

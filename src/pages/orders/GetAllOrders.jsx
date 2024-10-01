@@ -10,30 +10,52 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
 import apiClient from '../../app/axiosConfig';
+import UpdateOrderModal from './UpdateOrderModal';
 
 const GetAllOrders = () => {
     const [data, setData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [filteredProducts, setFilteredProducts] = useState([])
     const [isLoading, setisLoading] = useState(false)
+    const [limit, setLimit] = useState(10)
+    const [offset, setOffset] = useState(0)
+    const [totalPages, setTotalPages] = useState(0)
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState(null);
+    let idCounter = limit * offset + 1
 
     const token = secureLocalStorage.getItem("token")
     // console.log(token.access)
-    let idCounter = 1
 
+    const goToNextPage = () => {
+        setOffset((prevPage) => prevPage + 1)
+    }
+
+    const goToPreviousPage = () => {
+        setOffset((prevPage) => prevPage - 1)
+    }
+
+    const close = () => {
+        setOpenModal(false)
+    }
 
     useEffect(() => {
         fetchData()
-    }, [])
+    }, [limit, offset])
+
+    const refresh = () => {
+        fetchData()
+    }
 
 
 
     const fetchData = () => {
         setisLoading(true)
-        apiClient.get(`/adminuser/orders`)
+        apiClient.get(`/adminuser/orders/?limit=${limit}&offset=${offset}`)
             .then((res) => {
                 console.log(res.data)
-                setData(res.data)
+                setData(res.data.results)
+                setTotalPages(Math.ceil(res.data.count / limit))
             })
             .catch((e) => {
                 console.log(e?.response?.data?.detail)
@@ -71,7 +93,7 @@ const GetAllOrders = () => {
     function formatDate(dateString) {
         const date = new Date(dateString);
         return `${date.toLocaleString("en-US", { month: "short" })} ${date.getDate()} ${date.getFullYear().toString().slice(-2)}`;
-      }
+    }
 
 
 
@@ -111,6 +133,7 @@ const GetAllOrders = () => {
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
+                {openModal && (<UpdateOrderModal func={close} id={selectedProductId} refresh={refresh} />)}
 
                 <div className='flex justify-between mb-4'>
 
@@ -159,6 +182,9 @@ const GetAllOrders = () => {
                                             Status
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
+                                            Total Price
+                                        </th>
+                                        <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
                                             Has Paid
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
@@ -196,17 +222,22 @@ const GetAllOrders = () => {
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     <p className={`px-4 text-[12px] font-medium rounded-md py-2 w-full mx-auto max-w-[69px] font-manrope flex items-center justify-center ${staff.status === "Canceled" ? "text-[#fff] bg-[red]" :
-                                                            staff.status === "Pending" ? "bg-[#FFB3B3] text-[#C50000]" :
-                                                                staff.status === "Completed" ? "text-[#ffff] bg-[#5d9f65]" : ""
+                                                        staff.status === "Pending" ? "bg-[#FFB3B3] text-[#C50000]" :
+                                                            staff.status === "Completed" ? "text-[#ffff] bg-[#5d9f65]" : ""
                                                         }`}>
                                                         {staff.status}
                                                     </p>
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.has_paid === true ? 'yes':'No'}
+                                                  
+                                                ₦{staff.total_price}
+                                                   
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
-                                                    {staff.delivered === true ? 'yes':'No'}
+                                                    {staff.has_paid === true ? 'yes' : 'No'}
+                                                </td>
+                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
+                                                    {staff.delivered === true ? 'yes' : 'No'}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {formatDate(staff.created_at)}
@@ -222,9 +253,20 @@ const GetAllOrders = () => {
                                                         </button>
 
                                                     </div> */}
-                                                      <Link to={`/staff/update/${staff.id}`} className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4">
-                                                            <IoEyeSharp size={'1.5em'} />
-                                                        </Link>
+                                                    <div className='flex'>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                setOpenModal(true)
+                                                                setSelectedProductId(staff.id)
+                                                                console.log("click")
+                                                            }}
+                                                            className="text-[rgb(42,79,26)] hover:text-[#2A4F1A]"
+                                                        >
+                                                            <FaPen size={'1.5em'} />
+                                                        </button>
+
+                                                    </div>
 
                                                 </td>
 
@@ -249,7 +291,85 @@ const GetAllOrders = () => {
                     </div>
                 </div>
 
+                <div className='flex justify-between p-4'>
+                    <div className="flex justify-between">
+                        <div></div>
+                        <div className='flex items-center justify-end rounded-[5px] border-2 p-2 my-4 mx-2'>
+                            <div>
+                                <IoFilter />
+                            </div>
+                            <select
+                                value={limit}
+                                onChange={(e) => setLimit(parseInt(e.target.value))}
+                                className='outline-none'
+                            >
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                                <option value="15">15</option>
+                                <option value="20">20</option>
+                                <option value="25">25</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </div>
 
+                    </div>
+                    <div className="flex justify-end items-center">
+                        <button
+                            className={`mr-2 ${offset === 0
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            // onClick={() => onPageChange(currentPage - 1)}
+                            onClick={goToPreviousPage}
+                            disabled={offset === 0}
+                        >
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                            Prev
+                        </button>
+                        <div>
+                            {offset + 1} of {totalPages}
+                        </div>
+                        <button
+                            className={`ml-2 ${offset + 1 === totalPages
+                                ? 'opacity-50 cursor-not-allowed'
+                                : 'cursor-pointer'
+                                }`}
+                            onClick={goToNextPage}
+                            // disabled={currentPage === totalPages}
+                            disabled={offset + 1 === totalPages}
+                        >
+                            Next
+                            <svg
+                                className="w-6 h-6 inline-block align-middle"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M9 5l7 7-7 7"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
 
                 {/* <div className='flex justify-between p-4'>
     <div className="flex justify-between">
