@@ -179,6 +179,10 @@ const GetAllOrders = () => {
                                             Customer Email{' '}
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
+                                            {' '}
+                                            Customer Phone{' '}
+                                        </th>
+                                        <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
                                             Status
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
@@ -221,6 +225,9 @@ const GetAllOrders = () => {
                                                     {staff.user.email}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
+                                                    {staff.user.phone_number}
+                                                </td>
+                                                <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     <p className={`px-4 text-[12px] font-medium rounded-md py-2 w-full mx-auto max-w-[69px] font-manrope flex items-center justify-center ${staff.status === "Canceled" ? "text-[#fff] bg-[red]" :
                                                         staff.status === "Pending" ? "bg-[#FFB3B3] text-[#C50000]" :
                                                             staff.status === "Completed" ? "text-[#ffff] bg-[#5d9f65]" : ""
@@ -255,16 +262,17 @@ const GetAllOrders = () => {
                                                     </div> */}
                                                     <div className='flex'>
 
-                                                        <button
-                                                            onClick={() => {
-                                                                setOpenModal(true)
-                                                                setSelectedProductId(staff.id)
-                                                                console.log("click")
-                                                            }}
+                                                        <Link
+                                                            // onClick={() => {
+                                                            //     setOpenModal(true)
+                                                            //     setSelectedProductId(staff.id)
+                                                            //     console.log("click")
+                                                            // }}
+                                                            to={`/get/order/${staff.id}`}
                                                             className="text-[rgb(42,79,26)] hover:text-[#2A4F1A]"
                                                         >
-                                                            <FaPen size={'1.5em'} />
-                                                        </button>
+                                                            <IoEyeSharp size={'1.5em'} />
+                                                        </Link>
 
                                                     </div>
 
