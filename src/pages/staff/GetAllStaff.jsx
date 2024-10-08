@@ -20,9 +20,9 @@ const GetAllStaff = () => {
     const [openModal, setOpenModal] = useState(false)
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [limit, setLimit] = useState(10)
-    const [offset, setOffset] = useState(0)
+    const [offset, setOffset] = useState(1)
     const [totalPages,setTotalPages] = useState(0)
-    let idCounter = limit * offset + 1
+    let idCounter = limit * (offset - 1) +1
 
 
 
@@ -50,7 +50,7 @@ const GetAllStaff = () => {
 
     const fetchData = () => {
         setisLoading(true)
-        apiClient.get(`/adminuser/staff/?limit=${limit}&offset=${offset} `)
+        apiClient.get(`/adminuser/staff/?page_size=${limit}&page=${offset} `)
             .then((res) => {
                 console.log(res.data)
                 setData(res.data.results)
@@ -247,13 +247,13 @@ const GetAllStaff = () => {
                     </div>
                     <div className="flex justify-end items-center">
                         <button
-                            className={`mr-2 ${offset === 0
+                            className={`mr-2 ${offset === 1
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             // onClick={() => onPageChange(currentPage - 1)}
                             onClick={goToPreviousPage}
-                            disabled={offset === 0}
+                            disabled={offset === 1}
                         >
                             <svg
                                 className="w-6 h-6 inline-block align-middle"
@@ -272,16 +272,16 @@ const GetAllStaff = () => {
                             Prev
                         </button>
                         <div>
-                            {offset + 1} of {totalPages}
+                            {offset } of {totalPages}
                         </div>
                         <button
-                            className={`ml-2 ${offset + 1 === totalPages
+                            className={`ml-2 ${offset  === totalPages
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             onClick={goToNextPage}
                             // disabled={currentPage === totalPages}
-                            disabled={offset + 1 === totalPages}
+                            disabled={offset  === totalPages}
                         >
                             Next
                             <svg
