@@ -18,11 +18,11 @@ const GetAllOrders = () => {
     const [filteredProducts, setFilteredProducts] = useState([])
     const [isLoading, setisLoading] = useState(false)
     const [limit, setLimit] = useState(10)
-    const [offset, setOffset] = useState(0)
+    const [offset, setOffset] = useState(1)
     const [totalPages, setTotalPages] = useState(0)
     const [openModal, setOpenModal] = useState(false)
     const [selectedProductId, setSelectedProductId] = useState(null);
-    let idCounter = limit * offset + 1
+    let idCounter = limit * (offset - 1) + 1
 
     const token = secureLocalStorage.getItem("token")
     // console.log(token.access)
@@ -51,7 +51,7 @@ const GetAllOrders = () => {
 
     const fetchData = () => {
         setisLoading(true)
-        apiClient.get(`/adminuser/orders/?limit=${limit}&offset=${offset}`)
+        apiClient.get(`/adminuser/orders/?page_size=${limit}&page=${offset}`)
             .then((res) => {
                 console.log(res.data)
                 setData(res.data.results)
@@ -324,13 +324,13 @@ const GetAllOrders = () => {
                     </div>
                     <div className="flex justify-end items-center">
                         <button
-                            className={`mr-2 ${offset === 0
+                            className={`mr-2 ${offset === 1
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             // onClick={() => onPageChange(currentPage - 1)}
                             onClick={goToPreviousPage}
-                            disabled={offset === 0}
+                            disabled={offset === 1}
                         >
                             <svg
                                 className="w-6 h-6 inline-block align-middle"
@@ -349,16 +349,16 @@ const GetAllOrders = () => {
                             Prev
                         </button>
                         <div>
-                            {offset + 1} of {totalPages}
+                            {offset } of {totalPages}
                         </div>
                         <button
-                            className={`ml-2 ${offset + 1 === totalPages
+                            className={`ml-2 ${offset  === totalPages
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             onClick={goToNextPage}
                             // disabled={currentPage === totalPages}
-                            disabled={offset + 1 === totalPages}
+                            disabled={offset  === totalPages}
                         >
                             Next
                             <svg

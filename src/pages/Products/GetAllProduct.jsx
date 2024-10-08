@@ -15,9 +15,9 @@ const GetAllProduct = () => {
     const [openModal, setOpenModal] = useState(false)
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [limit, setLimit] = useState(10)
-    const [offset, setOffset] = useState(0)
+    const [offset, setOffset] = useState(1)
     const [totalPages,setTotalPages] = useState(0)
-    let idCounter = limit * offset + 1
+    let idCounter = limit * (offset -1) + 1
 
     const close = () => {
         setOpenModal(false)
@@ -36,9 +36,10 @@ const GetAllProduct = () => {
         const fetchProduct = async () => {
             dispatch(productReset());
             try {
-              const display =  await dispatch(getProducts({limit:limit, offset:offset})).unwrap();
+              const display =  await dispatch(getProducts({page_size:limit, page:offset})).unwrap();
+             
               setTotalPages(Math.ceil(display.count/limit))
-              console.log(display)
+              console.log(Math.ceil(display.count/limit))
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -189,13 +190,13 @@ const GetAllProduct = () => {
                     </div>
                     <div className="flex justify-end items-center">
                         <button
-                            className={`mr-2 ${offset === 0
+                            className={`mr-2 ${offset === 1
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             // onClick={() => onPageChange(currentPage - 1)}
                             onClick={goToPreviousPage}
-                            disabled={offset === 0}
+                            disabled={offset === 1}
                         >
                             <svg
                                 className="w-6 h-6 inline-block align-middle"
@@ -214,16 +215,16 @@ const GetAllProduct = () => {
                             Prev
                         </button>
                         <div>
-                            {offset + 1} of {totalPages}
+                            {offset} of {totalPages}
                         </div>
                         <button
-                            className={`ml-2 ${offset + 1 === totalPages
+                            className={`ml-2 ${offset  === totalPages
                                 ? 'opacity-50 cursor-not-allowed'
                                 : 'cursor-pointer'
                                 }`}
                             onClick={goToNextPage}
                             // disabled={currentPage === totalPages}
-                            disabled={offset + 1 === totalPages}
+                            disabled={offset  === totalPages}
                         >
                             Next
                             <svg
