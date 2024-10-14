@@ -71,22 +71,22 @@ const HomePage = () => {
         <h1 className='text-[16px] sm:text-left xss:text-center'>Welome Back</h1>
         <p className='text-[26px] sm:text-left xss:text-center'>{email}</p>
       </div>
-      <div className='grid grid-cols-3 mt-16'>
-        <div className={`bg-[#fff] lg:w-[300px] sm:w-[200px] h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
+      <div className='grid grid-cols-3 gap-4 mt-16'>
+        <div className={`bg-[#fff] w-full h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
           <div className='absolute top-[15%] left-[8%] flex flex-col z-[1]'>
             <p className='text-[#000000] text-[20px] font-[400]'>Total Customers</p>
             <p className='text-[30px] text-[#000000] font-[600]'>{data.totalCustomers}</p>
           </div>
           <img src={test1} className='absolute right-0 bottom-0'></img>
         </div>
-        <div className={`bg-[#fff] lg:w-[300px] sm:w-[200px] h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
+        <div className={`bg-[#fff] w-full h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
           <div className='absolute top-[15%] left-[8%] flex flex-col z-[1]'>
             <p className='text-[#000000] text-[20px] font-[400]'>Total Product</p>
             <p className='text-[30px] text-[#000000] font-[600]'>{data.totalProducts}</p>
           </div>
           <img src={test2} className='absolute right-0 bottom-0'></img>
         </div>
-        <div className={`bg-[#fff] lg:w-[300px] sm:w-[200px] h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
+        <div className={`bg-[#fff] w-full  h-[150px] rounded-[10px] overflow-hidden shadow-[0px_1px_7.2px_-2px_rgba(0,_0,_0,_0.25)] text-white relative`}>
           <div className='absolute top-[15%] left-[8%] flex flex-col z-[1]'>
             <p className='text-[#000000] text-[20px] font-[400]'>Total Order</p>
             <p className='text-[30px] text-[#000000] font-[600]'>{data.totalOrders}</p>
@@ -95,7 +95,7 @@ const HomePage = () => {
         </div>
       </div>
 
-      <div className='grid grid-cols-3 gap-6 mt-8'>
+      <div className='md:grid flex flex-col grid-cols-3 gap-6 mt-8'>
         <div className='bg-[#fff]  overflow-hidden rounded-lg shadow-md'>
           <SalesChart labels={label} series={series} title={"Orders"} />
         </div>
