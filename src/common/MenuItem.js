@@ -5,8 +5,8 @@ import {
    Home,
    Settings,
    UserRound,
-   CircleUserRound
-   
+   CircleUserRound,
+   MessageSquareDot
   } from 'lucide-react'
 
 
@@ -53,6 +53,13 @@ import {
       isTitle:false,
       icon: ShoppingCart,
       url:'/order'
+    },
+    {
+      key:"Complains",
+      label:"Complains",
+      isTitle:false,
+      icon:MessageSquareDot,
+      url:'/complain'
     },
     {
       key:'Settings',
