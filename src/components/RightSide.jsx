@@ -14,6 +14,8 @@ import UpdateStaff from '../pages/staff/UpdateStaff';
 import AddStaff from '../pages/staff/AddStaff';
 import GetAllOrders from '../pages/orders/GetAllOrders';
 import ViewOrdersDetails from '../pages/orders/ViewOrders/ViewOrdersDetails';
+import GetAllComplains from '../pages/Complains/GetAllComplains';
+import ViewAllComplains from '../pages/Complains/ViewAllComplains';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -47,6 +49,8 @@ const RightSide = ({isOpen, tog}) => {
             <Route path="/add/staff" element={<AddStaff/>}></Route>
             <Route path="/order" element={<GetAllOrders/>}></Route>
             <Route path="/get/order/:id/*" element={<ViewOrdersDetails/>}></Route>
+            <Route path="/complain" element={<GetAllComplains/>}></Route>
+            <Route path="/get/complain/:id" element={<ViewAllComplains/>}></Route>
           </Routes>
         
       </div>
