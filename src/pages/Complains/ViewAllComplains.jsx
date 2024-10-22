@@ -21,11 +21,11 @@ const ViewAllComplains = () => {
         setisLoading(true)
         apiClient.get(`/adminuser/customers/feedback/${id}/`)
             .then((res) => {
-                console.log(res)
+               
                 setData(res.data)
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+          
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -49,7 +49,7 @@ const ViewAllComplains = () => {
             toast.success(`Updated Successfully`)
         })
         .catch((e) => {
-                console.log(e?.response?.data?.detail)
+               
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')

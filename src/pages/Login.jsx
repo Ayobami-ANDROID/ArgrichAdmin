@@ -33,7 +33,15 @@ const Login = () => {
         secureLocalStorage.setItem("email",values.email)
         navigate('/')
       } catch (error) {
-        console.error("Registration failed:", error);
+      
+        
+        if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+          toast.error(error?.response?.data?.detail)
+          window.location.replace('/auth/login')
+        }
+        else {
+          toast.error(error?.response?.data?.detail || 'An error Occured')
+        }
       }
 
     },

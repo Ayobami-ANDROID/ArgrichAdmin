@@ -25,11 +25,11 @@ const GetAllComplains = () => {
         setisLoading(true)
         apiClient.get('/adminuser/customers/feedback/')
             .then((res) => {
-                console.log(res.data)
+                
                 setData(res.data)
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+                
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -199,11 +199,7 @@ const GetAllComplains = () => {
                                                     <div className='flex'>
 
                                                         <Link
-                                                            // onClick={() => {
-                                                            //     setOpenModal(true)
-                                                            //     setSelectedProductId(staff.id)
-                                                            //     console.log("click")
-                                                            // }}
+                                                           
                                                             to={`/get/complain/${staff.id}`}
                                                             className="text-[rgb(42,79,26)] hover:text-[#2A4F1A]"
                                                         >

@@ -9,7 +9,7 @@ export const getCategory = createAsyncThunk(
       const response = await categoryServise.getCategory();
       return response;
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+    
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -32,7 +32,7 @@ export const createCategory = createAsyncThunk(
       const response = await categoryServise.createCategory(userdata)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+     
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -54,7 +54,7 @@ export const getCategorybyId = createAsyncThunk(
       const response = await categoryServise.getCategoryId(category)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+     
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -76,7 +76,7 @@ export const updateCategory = createAsyncThunk(
       const response = await categoryServise.updateCategory(category,userdata)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+      
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -98,7 +98,7 @@ export const deleteCategory = createAsyncThunk(
       const response = await categoryServise.deleteCategory(category)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+     
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')

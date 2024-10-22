@@ -36,7 +36,7 @@ const UpdateStaff = () => {
                 })
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+              
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -57,7 +57,7 @@ const UpdateStaff = () => {
         },
         validationSchema: validateStaff,
         onSubmit: async (values) => {
-            console.log(values)
+      
             const body = {
                 email: values.email,
                 name: values.name,
@@ -72,7 +72,7 @@ const UpdateStaff = () => {
                     navigate(-1)
                 })
                 .catch((e) => {
-                    console.log(e?.response?.data?.detail)
+                    
                     if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                         toast.error(e?.response?.data?.detail)
                         window.location.replace('/auth/login')

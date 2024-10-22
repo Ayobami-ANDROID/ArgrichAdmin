@@ -3,7 +3,7 @@ import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 
 const token = secureLocalStorage.getItem("token")
-    console.log(token?.access)
+  
 
     const config= {
         headers:{

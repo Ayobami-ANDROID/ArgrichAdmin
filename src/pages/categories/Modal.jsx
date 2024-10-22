@@ -15,7 +15,15 @@ const Modal = ({ func, id }) => {
         await dispatch(getCategory()).unwrap();
         func()
     } catch (error) {
-        console.error("Error deleting product:", error);
+        
+        
+        if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+          toast.error(error?.response?.data?.detail)
+          window.location.replace('/auth/login')
+        }
+        else {
+          toast.error(error?.response?.data?.detail || 'An error Occured')
+        }
         // You might want to show an error message to the user here
     }
 };

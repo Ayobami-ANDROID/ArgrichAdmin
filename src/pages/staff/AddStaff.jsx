@@ -31,7 +31,7 @@ const AddStaff = () => {
     },
     validationSchema: validateStaff,
     onSubmit: async (values) => {
-      console.log(values)
+    
       const body = {
         email: values.email,
         name: values.name,
@@ -46,7 +46,7 @@ const AddStaff = () => {
           navigate(-1)
         })
         .catch((e) => {
-          console.log(e?.response?.data?.detail)
+       
           if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
             toast.error(e?.response?.data?.detail)
             window.location.replace('/auth/login')

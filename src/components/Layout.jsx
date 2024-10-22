@@ -24,7 +24,7 @@ const Layout = () => {
 
   
 
-  console.log(isOpen)
+ 
   return (
     <div>
         

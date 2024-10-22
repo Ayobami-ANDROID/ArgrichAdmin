@@ -33,7 +33,7 @@ const GetAllCustomer = () => {
       }
 
     const token = secureLocalStorage.getItem("token")
-    console.log(token.access)
+   
     
 
     const config = {
@@ -55,13 +55,13 @@ const GetAllCustomer = () => {
         setisLoading(true)
         apiClient.get(`/adminuser/customers/?page_size=${limit}&page=${offset}`)
             .then((res) => {
-                console.log(res.data)
+              
                 setData(res.data.results)
                 const result = res.data.count
                 setTotalPages(Math.ceil(result/limit))
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+                
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -108,8 +108,7 @@ const GetAllCustomer = () => {
                 fetchData()
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
-                console.log(e?.response?.data?.detail)
+                
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -225,7 +224,7 @@ const GetAllCustomer = () => {
                                                            onClick={() => {
                                                             setOpenModal(true)
                                                             setSelectedProductId(staff.id)
-                                                            console.log("click")
+                                                            
                                                         }}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                         >

@@ -14,7 +14,7 @@ export const getProducts = createAsyncThunk(
       const response = await productService.getProducts(page_size,page);
       return response;
     } catch (error) {
-      console.log(error.response.data.detail)
+     
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -36,7 +36,7 @@ export const getSingleProduct = createAsyncThunk(
       const response = await productService.getSingleProduct(id);
       return response;
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+      
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -58,7 +58,7 @@ export const getSearchProduct = createAsyncThunk(
       const response = await productService.getSearchProduct(name,search)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+      
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -80,7 +80,7 @@ export const updateProduct = createAsyncThunk(
       const response = await productService.updateProduct(id,userData)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+      
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -102,7 +102,7 @@ export const deleteProduct = createAsyncThunk(
       const response = await productService.deleteProduct(id)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+     
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -124,7 +124,7 @@ export const createProduct =createAsyncThunk(
       const response = await productService.createProduct(userData)
       return response
     } catch (error) {
-      console.log(error?.response?.data?.detail)
+      
       if(error?.response?.data?.detail === "Authentication credentials were not provided."){
         toast.error(error?.response?.data?.detail)
         window.location.replace('/auth/login')
@@ -157,11 +157,11 @@ const productSlice = createSlice({
       .addCase(getProducts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.products = action.payload
-        console.log("getProduct", action.payload);
+        
       })
       .addCase(getProducts.rejected, (state, action) => {
         state.isLoading = false;
-        console.log("getProduct", action.payload);
+      
       })
       .addCase(getSingleProduct.pending, (state, action) => {
         state.isLoading = true;

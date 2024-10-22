@@ -26,7 +26,7 @@ const AddProduct = () => {
     const [imagePreview, setImagePreview] = useState(null)
 
     const token = secureLocalStorage.getItem("token")
-    console.log(token.access)
+    
 
     const config= {
         headers:{
@@ -40,7 +40,14 @@ const AddProduct = () => {
             try {
                 await dispatch(getCategory()).unwrap()
             } catch (error) {
-                console.error("Error fetching categories:", error)
+               
+                if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(error?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(error?.response?.data?.detail || 'An error Occured')
+                  }
             }
         }
        
@@ -78,7 +85,7 @@ const AddProduct = () => {
                     navigate(-1);
                 })
                 .catch((e) => {
-                    console.log(e?.response?.data?.detail)
+                  
                     if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                         toast.error(e?.response?.data?.detail)
                         window.location.replace('/auth/login')
@@ -91,7 +98,14 @@ const AddProduct = () => {
                 
                 
             } catch (error) {
-                console.error("Error updating product:", error);
+                
+                if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(error?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(error?.response?.data?.detail || 'An error Occured')
+                  }
             }
         }
     })
@@ -192,7 +206,7 @@ const AddProduct = () => {
                                     fieldName={`Upload product image in JPG or JPEG format`}
                                     onChange={(e) => {
                                         const file = e.target.files[0];
-                                        console.log(file)
+                                        
                                         formik.setFieldValue("image", file);
                                         setbase64(URL.createObjectURL(file)  )
                                         // Set the image preview
