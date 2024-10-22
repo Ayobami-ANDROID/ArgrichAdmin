@@ -23,7 +23,7 @@ const GetAllProduct = () => {
         setOpenModal(false)
     }
 
-    console.log(openModal)
+   
 
 
 
@@ -39,9 +39,9 @@ const GetAllProduct = () => {
               const display =  await dispatch(getProducts({page_size:limit, page:offset})).unwrap();
              
               setTotalPages(Math.ceil(display.count/limit))
-              console.log(Math.ceil(display.count/limit))
+              
             } catch (error) {
-                console.error("Error fetching products:", error);
+                
             }
         };
 
@@ -69,7 +69,7 @@ const GetAllProduct = () => {
 
     useEffect(() => {
         if (!products.results) return;
-        console.log(products.results)
+        
 
         const filtered = searchQuery.trim() === ''
             ? products.results
@@ -148,7 +148,7 @@ const GetAllProduct = () => {
                                                         onClick={() => {
                                                             setOpenModal(true)
                                                             setSelectedProductId(product.id)
-                                                            console.log("click")
+                                                            
                                                         }}
                                                         className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                     >

@@ -24,7 +24,7 @@ const UpdateProduct = () => {
     const [imagePreview, setImagePreview] = useState(null)
     const [base64, setbase64] = useState('')
     const token = secureLocalStorage.getItem("token")
-    console.log(token.access)
+   
 
     const config= {
         headers:{
@@ -38,13 +38,20 @@ const UpdateProduct = () => {
             try {
                 await dispatch(getCategory()).unwrap()
             } catch (error) {
-                console.error("Error fetching categories:", error)
+             
+                if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(error?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(error?.response?.data?.detail || 'An error Occured')
+                  }
             }
         }
         const fetchProduct = async () => {
             try {
                 const fetchedProduct = await dispatch(getSingleProduct(id)).unwrap()
-                console.log("Fetched product:", fetchedProduct)
+                
                 formik.setValues({
                     name: fetchedProduct.name || '',
                     price: fetchedProduct.price || '',
@@ -54,7 +61,14 @@ const UpdateProduct = () => {
                     // image: fetchedProduct.image || null
                 })
             } catch (error) {
-                console.error("Error fetching product:", error)
+              
+                if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(error?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(error?.response?.data?.detail || 'An error Occured')
+                  }
             }
         }
 
@@ -76,7 +90,7 @@ const UpdateProduct = () => {
         },
         validationSchema: validateProduct,
         onSubmit: async (values) => {
-            console.log("Form values before submission:", values);
+           
     
             // Create FormData object to handle both text data and the image file
             const formData = new FormData();
@@ -91,37 +105,44 @@ const UpdateProduct = () => {
     
             // Append image if available
             if (values.image) {
-                console.log('values', values.image)
+               
                 formData.append('image', values.image);  // Append the file properly here
             }
-            for (let [key, value] of formData.entries()) {
-                if (key === 'image') {
-                    console.log(`${key}: ${value.name}, ${value.size}, ${value.type}`); // Log image file details
-                } else {
-                    console.log(`${key}: ${value}`);
-                }
-            }
+            // for (let [key, value] of formData.entries()) {
+            //     if (key === 'image') {
+            //         console.log(`${key}: ${value.name}, ${value.size}, ${value.type}`); // Log image file details
+            //     } else {
+            //         console.log(`${key}: ${value}`);
+            //     }
+            // }
     
     
             try {
                 // Dispatch with FormData as payload
-                console.log("image vale", values.image)
+             
                 const result = await dispatch(updateProduct({ id: id, userData: formData })).unwrap();
                 // await axios.patch(`adminuser/products/${id}/`,formData,config).then((res) => {
                 //      toast.success('Updated succefully')
                 // })
 
-                console.log("Update result:", result);
+              
                 navigate(-1);
             } catch (error) {
-                console.error("Error updating product:", error);
+                
+                if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(error?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(error?.response?.data?.detail || 'An error Occured')
+                  }
             }
         }
     });
 
     const handleImageChange = (e) => {
         const file = e.target.files[0];
-        console.log("Selected file:", file);
+      
         
         // Update Formik state with the image file
         formik.setFieldValue('image', file);

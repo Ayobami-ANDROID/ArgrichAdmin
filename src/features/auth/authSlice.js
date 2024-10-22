@@ -12,7 +12,7 @@ export const register = createAsyncThunk(
       return response;
     } catch (error) {
       toast.error(error.response?.data?.message || "An error occurred");
-      console.log(error);
+     
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || "An error occurred"
       );
@@ -28,7 +28,7 @@ export const login = createAsyncThunk(
       const response = await authService.login(userData);
       return response;
     } catch (error) {
-      console.log(error.response.data.error);
+     
 
       // if(error?.response?.data?.detail === "Authentication credentials were not provided."){
       //   toast.error(error?.response?.data?.detail)
@@ -79,10 +79,8 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log("action.payload", action.payload);
         state.user = action.payload.user;
-        state.token = action.payload.tokens;
-        console.log("action.payload.tokens", action.payload.tokens);
+        state.token = action.payload.tokens;  
         secureLocalStorage.setItem("token", action.payload.tokens);
         secureLocalStorage.setItem("user", action.payload.user);
       })

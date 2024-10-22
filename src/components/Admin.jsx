@@ -26,7 +26,15 @@ const TransactionTable = () => {
         const response = await axios.get('/api/transactions');
         setTransactions(response.data);
       } catch (error) {
-        console.error('Error fetching transaction data:', error);
+       
+        
+        if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+          toast.error(e?.response?.data?.detail)
+          window.location.replace('/auth/login')
+        }
+        else {
+          toast.error(e?.response?.data?.detail || 'An error Occured')
+        }
       }
     };
 
@@ -40,7 +48,15 @@ const TransactionTable = () => {
         saveAs(pdfBlob, 'transactions.pdf');
       })
       .catch((error) => {
-        console.error('Error downloading PDF:', error);
+       
+        
+        if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+          toast.error(e?.response?.data?.detail)
+          window.location.replace('/auth/login')
+        }
+        else {
+          toast.error(e?.response?.data?.detail || 'An error Occured')
+        }
       });
   };
 

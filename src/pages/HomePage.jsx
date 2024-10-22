@@ -27,11 +27,11 @@ const HomePage = () => {
   const fetchData = async () => {
     apiClient.get('/adminuser/dashboard/')
       .then((res) => {
-        console.log(res.data)
+      
         setdata(res.data)
       })
       .catch((e) => {
-        console.log(e?.response?.data?.detail)
+        
         if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
           toast.error(e?.response?.data?.detail)
           window.location.replace('/auth/login')
@@ -48,13 +48,13 @@ const HomePage = () => {
   const fetchData2 = async () => {
     apiClient.get(`/adminuser/customers/?limit=10&offset=0`)
       .then((res) => {
-        console.log(res.data)
+     
         setCustomers(res.data.results)
         // const result = res.data.count
         // setTotalPages(Math.ceil(result/limit))
       })
       .catch((e) => {
-        console.log(e?.response?.data?.detail)
+       
         if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
           toast.error(e?.response?.data?.detail)
           window.location.replace('/auth/login')

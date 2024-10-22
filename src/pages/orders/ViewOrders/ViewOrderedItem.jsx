@@ -1,10 +1,10 @@
 import React from 'react';
 
 const ViewOrderedItem = ({ data }) => {
-  console.log('ViewOrderedItem received data:', JSON.stringify(data, null, 2));
+ 
 
   if (!Array.isArray(data)) {
-    console.error('Expected an array, but received:', typeof data);
+  
     return <div>Error: Invalid data format</div>;
   }
 

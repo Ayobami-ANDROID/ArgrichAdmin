@@ -17,12 +17,12 @@ const ViewOrdersDetails = () => {
     setIsLoading(true)
     apiClient.get(`/adminuser/orders/${id}`)
       .then((res) => {
-        console.log('Ordered items:', JSON.stringify(res.data.ordered_items, null, 2))
+        
         setData(res.data.user)
         setOrder(res.data.ordered_items || [])
       })
       .catch((e) => {
-        console.error('Error:', e?.response?.data?.detail)
+       
         if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
           toast.error(e?.response?.data?.detail)
           window.location.replace('/auth/login')

@@ -25,7 +25,7 @@ const GetAllOrders = () => {
     let idCounter = limit * (offset - 1) + 1
 
     const token = secureLocalStorage.getItem("token")
-    // console.log(token.access)
+    
 
     const goToNextPage = () => {
         setOffset((prevPage) => prevPage + 1)
@@ -53,12 +53,12 @@ const GetAllOrders = () => {
         setisLoading(true)
         apiClient.get(`/adminuser/orders/?page_size=${limit}&page=${offset}`)
             .then((res) => {
-                console.log(res.data)
+               
                 setData(res.data.results)
                 setTotalPages(Math.ceil(res.data.count / limit))
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+               
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -107,8 +107,7 @@ const GetAllOrders = () => {
                 fetchData()
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
-                console.log(e?.response?.data?.detail)
+               
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -263,11 +262,7 @@ const GetAllOrders = () => {
                                                     <div className='flex'>
 
                                                         <Link
-                                                            // onClick={() => {
-                                                            //     setOpenModal(true)
-                                                            //     setSelectedProductId(staff.id)
-                                                            //     console.log("click")
-                                                            // }}
+                                                          
                                                             to={`/get/order/${staff.id}`}
                                                             className="text-[rgb(42,79,26)] hover:text-[#2A4F1A]"
                                                         >

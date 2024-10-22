@@ -52,12 +52,19 @@ const GetAllStaff = () => {
         setisLoading(true)
         apiClient.get(`/adminuser/staff/?page_size=${limit}&page=${offset} `)
             .then((res) => {
-                console.log(res.data)
+               
                 setData(res.data.results)
                 const result = res.data.count
                 setTotalPages(Math.ceil(result/limit))
             }).catch((e) => {
-                console.log(e)
+              
+                if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
+                    toast.error(e?.response?.data?.detail)
+                    window.location.replace('/auth/login')
+                  }
+                  else {
+                    toast.error(e?.response?.data?.detail || 'An error Occured')
+                  }
             })
 
             .finally(() => setisLoading(false))
@@ -93,7 +100,7 @@ const GetAllStaff = () => {
                 fetchData()
             })
             .catch((e) => {
-                console.log(e?.response?.data?.detail)
+                
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -196,7 +203,7 @@ const GetAllStaff = () => {
                                                             onClick={() => {
                                                                 setOpenModal(true)
                                                                 setSelectedProductId(staff.id)
-                                                                console.log("click")
+                                                                
                                                             }}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
                                                         >

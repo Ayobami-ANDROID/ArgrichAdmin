@@ -23,7 +23,7 @@ const UpdateOrderModal = ({ id, func,refresh }) => {
 
         })
         .catch((e) => {
-                console.log(e?.response?.data?.detail)
+                
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')

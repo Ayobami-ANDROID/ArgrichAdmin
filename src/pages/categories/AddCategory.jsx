@@ -26,7 +26,7 @@ const AddCategory = () => {
         },
         validationSchema: validateCategory,
         onSubmit: async (values) => {
-            console.log(values)
+          
 
             await dispatch(createCategory(values)).unwrap()
             navigate(-1)

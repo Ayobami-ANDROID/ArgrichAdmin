@@ -30,7 +30,7 @@ const GetAllCategories = () => {
         setOpenModal(false)
     }
 
-    console.log(openModal)
+    
 
 
     useEffect(() => {
@@ -40,7 +40,7 @@ const GetAllCategories = () => {
             try {
 
                 await dispatch(getCategory()).unwrap();
-                console.log(isLoading)
+                
             } catch (error) { }
         };
 
@@ -157,7 +157,7 @@ const GetAllCategories = () => {
                                                             onClick={() => {
                                                                 setOpenModal(true)
                                                                 setSelectedProductId(staff.category)
-                                                                console.log("click")
+                                                                
                                                             }}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]">
                                                             <MdDelete size={'1.5em'} />

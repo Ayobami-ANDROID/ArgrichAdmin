@@ -22,7 +22,7 @@ import {  Routes, Route, Navigate } from 'react-router-dom';
 
 const RightSide = ({isOpen, tog}) => {
   
-  console.log(isOpen)
+  
   return (
     <>
       
