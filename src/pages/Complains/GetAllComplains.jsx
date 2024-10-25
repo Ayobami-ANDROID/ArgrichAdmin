@@ -8,12 +8,15 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
 import apiClient from '../../app/axiosConfig';
+import Modal from './Modal';
 
 const GetAllComplains = () => {
     const [data, setData] = useState([])
     const [searchQuery, setSearchQuery] = useState('')
     const [filteredProducts, setFilteredProducts] = useState([])
     const [isLoading, setisLoading] = useState(false)
+    const [openModal, setOpenModal] = useState(false)
+    const [selectedProductId, setSelectedProductId] = useState(null);
     var idCounter = 1
 
 
@@ -25,11 +28,11 @@ const GetAllComplains = () => {
         setisLoading(true)
         apiClient.get('/adminuser/customers/feedback/')
             .then((res) => {
-                
+
                 setData(res.data)
             })
             .catch((e) => {
-                
+
                 if (e?.response?.data?.detail === "Authentication credentials were not provided.") {
                     toast.error(e?.response?.data?.detail)
                     window.location.replace('/auth/login')
@@ -86,7 +89,7 @@ const GetAllComplains = () => {
 
 
             <div className='bg-[#fff] mt-4  p-4 shadow-md overflow-hidden   rounded-[10px]'>
-                
+
 
                 <div className='flex justify-between mb-4'>
 
@@ -119,7 +122,7 @@ const GetAllComplains = () => {
                                             {' '}
                                             #{' '}
                                         </th>
-                                      
+
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap">
                                             {' '}
                                             Customer Name{' '}
@@ -133,14 +136,14 @@ const GetAllComplains = () => {
                                             Complain Message{' '}
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
-                                              Complain Date
+                                            Complain Date
                                         </th>
                                         <th className="px-4 py-4 text-start text-sm whitespace-nowrap">
                                             Resolved
                                         </th>
-                                        
-                                       
-                                      
+
+
+
 
 
                                         <th className="px-4 py-4 text-start text-sm  whitespace-nowrap"></th>
@@ -159,19 +162,19 @@ const GetAllComplains = () => {
                                                     {idCounter++}
 
                                                 </td>
-                                              
+
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {staff.user.name}
                                                 </td>
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {staff.user.email}
                                                 </td>
-                                              
+
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {TrimText(staff.message)}
                                                 </td>
-                                               
-                                                
+
+
                                                 <td className="px-4 py-4 text-start text-sm font-medium whitespace-nowrap">
                                                     {formatDate(staff.created_at)}
                                                 </td>
@@ -199,12 +202,23 @@ const GetAllComplains = () => {
                                                     <div className='flex'>
 
                                                         <Link
-                                                           
+
                                                             to={`/get/complain/${staff.id}`}
-                                                            className="text-[rgb(42,79,26)] hover:text-[#2A4F1A]"
+                                                            className="text-[rgb(42,79,26)] hover:text-[#2A4F1A] mr-4"
                                                         >
                                                             <IoEyeSharp size={'1.5em'} />
                                                         </Link>
+
+                                                        <button
+                                                            onClick={() => {
+                                                                setOpenModal(true)
+                                                                setSelectedProductId(product.id)
+
+                                                            }}
+                                                            className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
+                                                        >
+                                                            <MdDelete size={'1.5em'} />
+                                                        </button>
 
                                                     </div>
 
