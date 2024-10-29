@@ -5,6 +5,7 @@ import apiClient from '../../app/axiosConfig'
 import { PulseLoader } from 'react-spinners'
 import { ArrowLeft } from 'lucide-react'
 
+
 const ViewAllComplains = () => {
 
     const [data, setData] = useState([])
