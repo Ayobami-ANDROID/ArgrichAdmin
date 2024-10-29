@@ -48,6 +48,12 @@ const GetAllComplains = () => {
         setSearchQuery(event.target.value)
     }
 
+    const close = () => {
+        setOpenModal(false)
+    }
+
+    
+
     function TrimText(text) {
         if (text === null) {
             return ''
@@ -72,6 +78,10 @@ const GetAllComplains = () => {
         }
     }, [searchQuery, data])
 
+    const onDeleteSuccess = () => {
+        fetchData()
+    }
+
     function formatDate(dateString) {
         const date = new Date(dateString);
         return `${date.toLocaleString("en-US", { month: "short" })} ${date.getDate()} ${date.getFullYear().toString().slice(-2)}`;
@@ -85,6 +95,8 @@ const GetAllComplains = () => {
                     <PulseLoader speedMultiplier={0.9} color="#fff" size={20} />
                 </div>
             )}
+
+            {openModal && (<Modal func={close} id={selectedProductId} onDeleteSuccess={onDeleteSuccess}/>)}
 
 
 
@@ -212,7 +224,7 @@ const GetAllComplains = () => {
                                                         <button
                                                             onClick={() => {
                                                                 setOpenModal(true)
-                                                                setSelectedProductId(product.id)
+                                                                setSelectedProductId(staff.id)
 
                                                             }}
                                                             className="text-[#A30D11] hover:text-[#A30D11]/[0.7]"
