@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import App from './App.jsx'
 import './index.css'
 import store from './App/store.js';
-import { injectStore } from './app/storeInjector.js';
+import { injectStore } from './App/storeInjector.js';
 
 injectStore(store);
 
