@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import secureLocalStorage from 'react-secure-storage'
-import apiClient from '../app/axiosConfig'
+import apiClient from '../App/axiosConfig'
 import { toast } from 'react-toastify'
 import test1 from '../assets/Test1.png'
 import test2 from '../assets/test2.png'

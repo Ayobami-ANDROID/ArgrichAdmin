@@ -12,7 +12,7 @@ import { BiArrowBack } from 'react-icons/bi'
 import UploadField from '../../components/UploadField'
 import secureLocalStorage from 'react-secure-storage'
 import axios from 'axios'
-import apiClient from '../../app/axiosConfig'
+import apiClient from '../../App/axiosConfig'
 import { toast } from 'react-toastify'
 
 const AddProduct = () => {

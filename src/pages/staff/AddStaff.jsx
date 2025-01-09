@@ -10,7 +10,7 @@ import { validateStaff } from '../../services'
 import { useFormik } from 'formik'
 import { BiArrowBack } from 'react-icons/bi'
 import UploadField from '../../components/UploadField'
-import apiClient from '../../app/axiosConfig'
+import apiClient from '../../App/axiosConfig'
 import axios from 'axios'
 import secureLocalStorage from 'react-secure-storage'
 import { RiEyeFill, RiEyeOffFill } from "react-icons/ri";

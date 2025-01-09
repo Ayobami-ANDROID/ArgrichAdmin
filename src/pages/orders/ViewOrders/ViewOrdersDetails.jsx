@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import apiClient from '../../../app/axiosConfig'
+import apiClient from '../../../App/axiosConfig'
 import { toast } from 'react-toastify'
 import { PulseLoader } from "react-spinners";
 import { useParams, Route, Routes } from 'react-router-dom';
