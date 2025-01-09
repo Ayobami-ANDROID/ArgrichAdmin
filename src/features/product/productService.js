@@ -1,4 +1,4 @@
-import apiClient from "../../app/axiosConfig";
+import apiClient from "../../App/axiosConfig";
 import axios from "axios";
 import secureLocalStorage from "react-secure-storage";
 
