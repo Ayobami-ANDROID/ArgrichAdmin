@@ -1,4 +1,4 @@
-import apiClient from "../../app/axiosConfig";
+import apiClient from "../../App/axiosConfig";
 
 const getCategory = async () =>{
     const response = await apiClient.get(`/adminuser/categories/`)

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { UilTimes } from '@iconscout/react-unicons'
-import apiClient from '../../app/axiosConfig'
+import apiClient from '../../App/axiosConfig'
 import { toast } from 'react-toastify'
 
 

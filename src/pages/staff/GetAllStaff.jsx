@@ -9,7 +9,7 @@ import { IoFilter } from "react-icons/io5";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
-import apiClient from '../../app/axiosConfig';
+import apiClient from '../../App/axiosConfig';
 import Modal from './Modal';
 
 const GetAllStaff = () => {

@@ -10,7 +10,7 @@ import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { PulseLoader } from "react-spinners";
 import Modal from './Modal';
-import apiClient from '../../app/axiosConfig';
+import apiClient from '../../App/axiosConfig';
 
 const GetAllCustomer = () => {
     const [data, setData] = useState([])
