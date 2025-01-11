@@ -56,7 +56,7 @@ const Login = () => {
       )}
 
       <img alt="Your Company" src={icon} className="mx-auto h-10 w-auto mb-6" />
-      <div className="bg-[#fff] rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px]  lg:px-16 px-4 py-5 lg:w-[35%] w-[full] shadow-lg">
+      <div className="bg-[#fff] rounded-tl-[20px] rounded-tr-[20px] rounded-br-[20px]  lg:px-16 px-4 py-5 lg:w-2/5 w-[full] shadow-lg">
         <h1 className="font-[500] text-[25px] text-[#005C2D] mb-8 text-center">Login to your account</h1>
 
         <form onSubmit={formik.handleSubmit}>
