@@ -3,7 +3,7 @@ import { store } from "./storeInjector";
 import { setToken } from "../features/auth/authSlice";
 
 const apiClient = axios.create({
-  baseURL: "https://argrich-xsnx.onrender.com/",
+  baseURL: "https://argrich-xsnx.onrender.com/api/v1",
 });
 
 // Request interceptor to add authorization header and set correct Content-Type
