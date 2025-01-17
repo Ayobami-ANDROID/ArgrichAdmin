@@ -8,13 +8,7 @@ export default {
   ],
   darkMode: "class",
   theme: {
-      screens: {
-        xss: "300px",
-        xs: "340px",
-        xsm: "500px",
-        mxl: "1400px",
-        
-      },
+     
     extend: {},
   },
   plugins: [

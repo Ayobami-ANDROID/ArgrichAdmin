@@ -35,7 +35,7 @@ import {
     },
     {
       key: 'Customer',
-      label:'Customer',
+      label:'Customer/Reviews',
       isTitle:false,
       icon:UserRound,
       url:'/customer'
