@@ -16,6 +16,7 @@ import GetAllOrders from '../pages/orders/GetAllOrders';
 import ViewOrdersDetails from '../pages/orders/ViewOrders/ViewOrdersDetails';
 import GetAllComplains from '../pages/Complains/GetAllComplains';
 import ViewAllComplains from '../pages/Complains/ViewAllComplains';
+import PasswordChange from '../pages/PasswordChange/PasswordChange';
 import {  Routes, Route, Navigate } from 'react-router-dom';
 
 
@@ -51,6 +52,7 @@ const RightSide = ({isOpen, tog}) => {
             <Route path="/get/order/:id/*" element={<ViewOrdersDetails/>}></Route>
             <Route path="/complain" element={<GetAllComplains/>}></Route>
             <Route path="/get/complain/:id" element={<ViewAllComplains/>}></Route>
+            <Route path="/settings" element={<PasswordChange/>}></Route>
           </Routes>
         
       </div>
