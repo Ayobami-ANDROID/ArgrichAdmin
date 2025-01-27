@@ -88,3 +88,12 @@ const passwordRegExp =
   export const validateCategory= yup.object().shape({
     category: yup.string().required(`Enter Category`)
   })
+
+  export const changePassword = yup.object().shape({
+    oldPassword:yup.string().required('enter Old password'),
+    newPassword:yup.string().required('EnterNewPassword').min(8),
+    newPasswordConfirm: yup
+    .string()
+    .oneOf([yup.ref("newPassword")], "Passwords must match")
+    .required("required"),
+  })

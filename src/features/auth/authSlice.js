@@ -35,7 +35,7 @@ export const login = createAsyncThunk(
       //   window.location.replace('/auth/login')
       // }
     
-        toast.error(error?.response?.data?.detail || 'An error Occured')
+        toast.error(error?.response?.data?.detail || error?.response?.data?.error || 'An error Occured' )
   
      
       return thunkAPI.rejectWithValue(

@@ -35,13 +35,10 @@ const Login = () => {
       } catch (error) {
       
         
-        if (error?.response?.data?.detail === "Authentication credentials were not provided.") {
-          toast.error(error?.response?.data?.detail)
-          window.location.replace('/auth/login')
-        }
-        else {
-          toast.error(error?.response?.data?.detail || 'An error Occured')
-        }
+        
+        console.log(error)
+          // toast.error(error.response?.data.error || 'An error Occured' || error.response?.data.error )
+      
       }
 
     },
