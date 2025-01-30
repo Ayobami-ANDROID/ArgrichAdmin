@@ -23,6 +23,9 @@ const Modal = ({ func, id }) => {
       }
       // You might want to show an error message to the user here
     }
+    finally{
+      func()
+    }
   };
   return (
     <div className="fixed top-0 left-0 w-screen h-screen z-50 flex items-center justify-center bg-black bg-opacity-50 ">
