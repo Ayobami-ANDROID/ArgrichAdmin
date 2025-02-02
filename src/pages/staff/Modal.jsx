@@ -26,7 +26,10 @@ const Modal = ({ func, id,onDeleteSuccess }) => {
             }
 
         })
-        .finally(() => setisLoading(false))
+        .finally(() => {
+          setisLoading(false)
+          func()
+        } )
 
 }
   return (
