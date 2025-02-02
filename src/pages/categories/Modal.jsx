@@ -25,6 +25,8 @@ const Modal = ({ func, id }) => {
           toast.error(error?.response?.data?.detail || 'An error Occured')
         }
         // You might want to show an error message to the user here
+    }finally{
+      func()
     }
 };
   return (
